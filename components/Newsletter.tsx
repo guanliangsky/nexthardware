@@ -45,13 +45,14 @@ export default function Newsletter() {
     <section className="py-16 px-4 sm:px-6 lg:px-8 border-y border-slate-200 bg-white">
       <div className="container mx-auto max-w-2xl text-center">
         <motion.h2
+          id="newsletter"
           className="text-2xl sm:text-3xl font-bold mb-3 bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          Stay Updated
+          Join Our Email Community
         </motion.h2>
         <motion.p
           className="text-sm text-slate-600 mb-6 max-w-xl mx-auto"
@@ -60,7 +61,7 @@ export default function Newsletter() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          Get notified about upcoming events, community updates, and hardware innovations
+          Get notified about upcoming events, community updates, and hardware innovations. Join our email group to connect with the community.
         </motion.p>
 
         <motion.form

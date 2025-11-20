@@ -17,26 +17,23 @@ export default function Join() {
             Join the Community
           </h2>
           <p className="text-base text-slate-600 mb-10 max-w-xl mx-auto">
-            Connect with hardware engineers, founders, and makers building the future
+            Connect with hardware engineers, founders, and makers building the future. Join our Discord community or subscribe to our email group.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://luma.com/NextHardware"
+              href="https://discord.gg/d5dTjjVD"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm"
             >
-              Join on Luma
+              Join Discord
             </a>
-            {/* TODO: Replace with your Discord server invite URL */}
             <a
-              href="#" // Replace with: https://discord.gg/your-server
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#newsletter"
               className="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-medium rounded-md hover:border-slate-400 hover:text-slate-900 transition-colors text-sm"
             >
-              Join Discord
+              Join Email Group
             </a>
           </div>
         </motion.div>

@@ -11,11 +11,11 @@ interface LogoProps {
 
 export default function Logo({ className = "", showText = true, size = "md" }: LogoProps) {
   const sizeClasses = {
-    sm: "h-6 w-6",
-    md: "h-8 w-8",
-    lg: "h-12 w-12",
-    xl: "h-32 w-32 sm:h-40 sm:w-40",
-    "2xl": "h-48 w-48 sm:h-60 sm:w-60 lg:h-72 lg:w-72",
+    sm: "h-6",
+    md: "h-8",
+    lg: "h-12",
+    xl: "h-32 sm:h-40",
+    "2xl": "h-48 sm:h-60 lg:h-72",
   };
 
   const textSizeClasses = {
@@ -26,23 +26,24 @@ export default function Logo({ className = "", showText = true, size = "md" }: L
     "2xl": "text-3xl sm:text-4xl lg:text-5xl",
   };
 
-  const imageSize = size === "sm" ? 24 : size === "md" ? 32 : size === "lg" ? 48 : size === "xl" ? 160 : 288;
+  // Calculate width based on aspect ratio (922:284 ≈ 3.25:1)
+  const height = size === "sm" ? 24 : size === "md" ? 32 : size === "lg" ? 48 : size === "xl" ? 160 : 288;
+  const width = Math.round(height * 3.25);
+  const imageSize = { width, height };
   
   return (
     <Link href="/" className={`flex items-center gap-3 ${className}`}>
-      {/* Logo Image - N in rounded square, cropped to remove white space */}
-      <div className={`${sizeClasses[size]} relative flex-shrink-0 overflow-hidden`}>
-        <div className="absolute inset-[-15%] w-[130%] h-[130%]">
-          <Image
-            src="/nhlogo.png"
-            alt="Next Hardware Logo"
-            width={imageSize}
-            height={imageSize}
-            className="object-cover w-full h-full"
-            priority
-            unoptimized
-          />
-        </div>
+      {/* Logo Image - full image display */}
+      <div className={`${sizeClasses[size]} relative flex-shrink-0`}>
+        <Image
+          src="/images/u1.png"
+          alt="Next Hardware Logo"
+          width={imageSize.width}
+          height={imageSize.height}
+          className="object-contain w-auto h-full"
+          priority
+          unoptimized
+        />
       </div>
       
       {/* Text - NEXT HARDWARE stacked */}

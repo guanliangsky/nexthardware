@@ -49,3 +49,20 @@ body {
   }
 }
 
+/* Fallback: Ensure content is visible if JavaScript fails to load */
+/* Framer Motion will override this once animations run */
+[style*="opacity: 0"] {
+  animation: fadeInFallback 0.5s forwards;
+}
+
+@keyframes fadeInFallback {
+  to {
+    opacity: 1 !important;
+  }
+}
+
+/* Once JS loads, let Framer Motion take over */
+body.js-loaded [style*="opacity: 0"] {
+  animation: none;
+}
+

@@ -32,8 +32,8 @@ export default function Navbar() {
         transition={{ duration: 0.4 }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-          <Logo size="sm" />
+          <div className="flex items-center justify-between h-20 md:h-24">
+          <Logo size="lg" showText={false} />
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
@@ -76,7 +76,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-16 left-0 right-0 z-40 bg-white border-b border-slate-200 shadow-lg md:hidden"
+            className="fixed top-20 md:top-24 left-0 right-0 z-40 bg-white border-b border-slate-200 shadow-lg md:hidden"
           >
             <div className="container mx-auto px-4 py-4">
               <nav className="flex flex-col gap-4">

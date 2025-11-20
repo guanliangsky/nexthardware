@@ -8,7 +8,7 @@ const socialLinks = [
   { name: "Twitter/X", url: "#", label: "X" }, // Replace with: https://twitter.com/nexthardware
   { name: "GitHub", url: "#", label: "GitHub" }, // Replace with: https://github.com/nexthardware
   { name: "Luma", url: "https://luma.com/NextHardware", label: "Luma" },
-  { name: "Discord", url: "#", label: "Discord" }, // Replace with: https://discord.gg/your-server
+  { name: "Discord", url: "https://discord.gg/d5dTjjVD", label: "Discord" },
 ];
 
 export default function Footer() {
@@ -22,7 +22,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.3 }}
           >
-            <Logo size="sm" showText={true} />
+            <Logo size="sm" showText={false} />
             <p className="text-xs text-slate-600">
               © 2025 Next Hardware. Building in Public.
             </p>
