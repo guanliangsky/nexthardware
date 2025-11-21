@@ -16,6 +16,26 @@ export default function AdminSubscribers() {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
 
+  // Check for persisted authentication on mount
+  useEffect(() => {
+    const savedAuth = localStorage.getItem("admin_authenticated");
+    if (savedAuth === "true") {
+      setAuthenticated(true);
+      fetchSubscribers();
+    }
+  }, []);
+
+  // Auto-refresh subscribers every 10 seconds when authenticated
+  useEffect(() => {
+    if (!authenticated) return;
+
+    const interval = setInterval(() => {
+      fetchSubscribers();
+    }, 10000); // Refresh every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [authenticated]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -36,11 +56,18 @@ export default function AdminSubscribers() {
 
       if (data.success) {
         setAuthenticated(true);
+        // Persist authentication in localStorage
+        localStorage.setItem("admin_authenticated", "true");
         fetchSubscribers();
       }
     } catch (err) {
       setError("Authentication failed. Please try again.");
     }
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    localStorage.removeItem("admin_authenticated");
   };
 
   const fetchSubscribers = async () => {
@@ -154,6 +181,12 @@ export default function AdminSubscribers() {
                 className="px-4 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors text-sm"
               >
                 Export CSV
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm"
+              >
+                Logout
               </button>
             </div>
           </div>
