@@ -32,7 +32,7 @@ async function sendNotificationEmail(email: string): Promise<boolean> {
         Authorization: `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: "Next Hardware <noreply@nexthardware.io>",
+        from: "Next Hardware <onboarding@resend.dev>",
         to: adminEmail,
         subject: "New Newsletter Subscriber",
         html: `
