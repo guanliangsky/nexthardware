@@ -16,16 +16,30 @@ export default function AdminSubscribers() {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
 
-  // Simple password protection (you can change this password)
-  const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "nexthardware2024";
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setAuthenticated(true);
-      fetchSubscribers();
-    } else {
-      setError("Incorrect password");
+    setError(null);
+    
+    try {
+      const response = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Incorrect password");
+        return;
+      }
+
+      if (data.success) {
+        setAuthenticated(true);
+        fetchSubscribers();
+      }
+    } catch (err) {
+      setError("Authentication failed. Please try again.");
     }
   };
 
