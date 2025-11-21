@@ -17,7 +17,9 @@ if (useSupabase) {
 // Send notification email to admin when someone subscribes
 async function sendNotificationEmail(email: string): Promise<boolean> {
   const resendApiKey = process.env.RESEND_API_KEY;
-  const adminEmail = process.env.CONTACT_EMAIL || "hello@nexthardware.io";
+  // Resend free account only allows sending to account owner's email
+  // Use account owner email until domain is verified
+  const adminEmail = process.env.CONTACT_EMAIL || "guanliangsky@gmail.com";
 
   if (!resendApiKey) {
     console.warn("⚠️  Resend API key not configured. Email notification skipped.");
