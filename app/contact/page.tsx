@@ -83,6 +83,13 @@ export default function Contact() {
                 </div>
 
                 <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-2">Location</h3>
+                  <p className="text-slate-600">
+                    Palo Alto, California
+                  </p>
+                </div>
+
+                <div>
                   <h3 className="text-sm font-semibold text-slate-700 mb-2">Community</h3>
                   <div className="space-y-2">
                     <a
