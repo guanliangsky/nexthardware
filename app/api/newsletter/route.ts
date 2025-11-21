@@ -33,9 +33,10 @@ export async function POST(request: NextRequest) {
     // Try to save to Supabase if configured
     if (useSupabase && supabase) {
       try {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from("newsletter_subscribers")
-          .insert([{ email: normalizedEmail, subscribed_at: new Date().toISOString() }]);
+          .insert([{ email: normalizedEmail, subscribed_at: new Date().toISOString() }])
+          .select();
 
         if (error) {
           // If email already exists, that's okay
@@ -45,7 +46,23 @@ export async function POST(request: NextRequest) {
               { status: 200 }
             );
           }
-          throw error;
+          // Log the actual error for debugging
+          console.error("Supabase insert error:", error);
+          console.error("Error details:", JSON.stringify(error, null, 2));
+          // Return error instead of falling through
+          return NextResponse.json(
+            { error: "Failed to save subscription to database", details: error.message },
+            { status: 500 }
+          );
+        }
+
+        // Verify data was inserted
+        if (!data || data.length === 0) {
+          console.error("No data returned from insert");
+          return NextResponse.json(
+            { error: "Subscription not saved" },
+            { status: 500 }
+          );
         }
 
         return NextResponse.json(
@@ -54,7 +71,11 @@ export async function POST(request: NextRequest) {
         );
       } catch (dbError) {
         console.error("Database error:", dbError);
-        // Fall through to file-based storage
+        // Return error instead of falling through silently
+        return NextResponse.json(
+          { error: "Database connection failed", details: dbError instanceof Error ? dbError.message : "Unknown error" },
+          { status: 500 }
+        );
       }
     }
 
