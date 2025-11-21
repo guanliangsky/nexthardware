@@ -7,6 +7,7 @@ import Events from "@/components/Events";
 import CommunityShowcase from "@/components/CommunityShowcase";
 import Newsletter from "@/components/Newsletter";
 import Join from "@/components/Join";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <CommunityShowcase />
       <Newsletter />
       <Join />
+      <Contact />
       <Footer />
     </main>
   );
