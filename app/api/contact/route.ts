@@ -89,9 +89,12 @@ ${formData.message}
     if (!response.ok) {
       const error = await response.text();
       console.error("Resend API error:", error);
+      console.error("Resend API response status:", response.status);
       return false;
     }
 
+    const result = await response.json();
+    console.log("Resend API success:", result);
     return true;
   } catch (error) {
     console.error("Email sending error:", error);
@@ -155,9 +158,17 @@ export async function POST(request: NextRequest) {
         }
 
         // Send email notification (non-blocking)
-        sendEmailNotification(formData).catch((err) => {
-          console.error("Failed to send email notification:", err);
-        });
+        sendEmailNotification(formData)
+          .then((success) => {
+            if (success) {
+              console.log("✅ Email notification sent successfully");
+            } else {
+              console.error("❌ Email notification failed (returned false)");
+            }
+          })
+          .catch((err) => {
+            console.error("❌ Failed to send email notification:", err);
+          });
 
         return NextResponse.json(
           { message: "Your message has been sent successfully!" },
