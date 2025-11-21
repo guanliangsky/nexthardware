@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { sendEmailViaGmail } from "@/lib/gmail";
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -37,56 +38,37 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 }
 
-// Send email notification using Resend
+// Send email notification using Gmail API
 async function sendEmailNotification(formData: {
   name: string;
   email: string;
   subject: string;
   message: string;
 }): Promise<boolean> {
-  const resendApiKey = process.env.RESEND_API_KEY;
-  // Resend free account only allows sending to account owner's email
-  // Use account owner email until domain is verified
-  // Trim and clean email to remove any newlines or extra whitespace
+  // Get recipient email from environment variable
   const recipientEmail = (process.env.CONTACT_EMAIL || "guanliangsky@gmail.com").trim().replace(/\n/g, "").replace(/\r/g, "");
+  
+  // Get sender email from environment variable (Gmail address)
+  const senderEmail = process.env.GMAIL_SENDER_EMAIL || "guanliangsky@gmail.com";
 
-  console.log("🔍 Checking Resend API key...");
-  console.log("🔍 RESEND_API_KEY present:", !!resendApiKey);
-  console.log("🔍 RESEND_API_KEY length:", resendApiKey ? resendApiKey.length : 0);
-  
-  if (!resendApiKey) {
-    console.error("❌ Resend API key not configured. Email notification skipped.");
-    console.error("❌ RESEND_API_KEY environment variable is missing!");
-    return false;
-  }
-  
-  console.log("📧 Attempting to send email notification...");
+  console.log("📧 Attempting to send email via Gmail API...");
   console.log("📧 To:", recipientEmail);
-  console.log("📧 From: Next Hardware <onboarding@resend.dev>");
-  console.log("📧 Resend API Key (first 10 chars):", resendApiKey.substring(0, 10) + "...");
+  console.log("📧 From:", senderEmail);
 
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${resendApiKey}`,
-      },
-      body: JSON.stringify({
-        from: "Next Hardware <onboarding@resend.dev>",
-        to: recipientEmail,
-        replyTo: formData.email,
-        subject: formData.subject || `Contact Form: ${formData.name}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${formData.name}</p>
-          <p><strong>Email:</strong> ${formData.email}</p>
-          <p><strong>Subject:</strong> ${formData.subject || "No subject"}</p>
-          <hr>
-          <p><strong>Message:</strong></p>
-          <p>${formData.message.replace(/\n/g, "<br>")}</p>
-        `,
-        text: `
+    const emailSent = await sendEmailViaGmail({
+      to: recipientEmail,
+      subject: formData.subject || `Contact Form: ${formData.name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${formData.name}</p>
+        <p><strong>Email:</strong> ${formData.email}</p>
+        <p><strong>Subject:</strong> ${formData.subject || "No subject"}</p>
+        <hr>
+        <p><strong>Message:</strong></p>
+        <p>${formData.message.replace(/\n/g, "<br>")}</p>
+      `,
+      text: `
 New Contact Form Submission
 
 Name: ${formData.name}
@@ -95,26 +77,19 @@ Subject: ${formData.subject || "No subject"}
 
 Message:
 ${formData.message}
-        `,
-      }),
+      `,
+      replyTo: formData.email,
     });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("❌ Resend API error:", error);
-      console.error("❌ Resend API response status:", response.status);
-      console.error("❌ Resend API URL:", "https://api.resend.com/emails");
-      console.error("❌ Resend API Key present:", !!resendApiKey);
-      console.error("❌ Recipient email:", recipientEmail);
+    if (emailSent) {
+      console.log("✅ Gmail API: Email sent successfully");
+      return true;
+    } else {
+      console.error("❌ Gmail API: Email sending failed");
       return false;
     }
-
-    const result = await response.json();
-    console.log("✅ Resend API success:", JSON.stringify(result, null, 2));
-    console.log("✅ Email sent to:", recipientEmail);
-    return true;
   } catch (error) {
-    console.error("Email sending error:", error);
+    console.error("❌ Gmail API error:", error);
     return false;
   }
 }
@@ -209,7 +184,7 @@ export async function POST(request: NextRequest) {
 
     // Last resort: Log to console
     console.log("Contact form submission (not saved):", formData);
-    console.log("⚠️  Set up Supabase or Resend to save/send messages.");
+    console.log("⚠️  Set up Supabase or Gmail API to save/send messages.");
 
     return NextResponse.json(
       { message: "Your message has been received. We'll get back to you soon!" },

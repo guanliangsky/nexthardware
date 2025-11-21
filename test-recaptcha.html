@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>reCAPTCHA Test</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeyxxMsAAAAAP07bt2AUMfy3qAriYyOh1eNBajG"></script>
+</head>
+<body>
+    <h1>reCAPTCHA Test</h1>
+    <button onclick="testRecaptcha()">Test reCAPTCHA</button>
+    <div id="result"></div>
+    
+    <script>
+        function testRecaptcha() {
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LeyxxMsAAAAAP07bt2AUMfy3qAriYyOh1eNBajG', {action: 'contact_form'})
+                    .then(function(token) {
+                        document.getElementById('result').innerHTML = 
+                            '<p style="color: green;">✅ reCAPTCHA Token Generated!</p>' +
+                            '<p>Token: ' + token.substring(0, 50) + '...</p>';
+                    })
+                    .catch(function(error) {
+                        document.getElementById('result').innerHTML = 
+                            '<p style="color: red;">❌ Error: ' + error + '</p>';
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

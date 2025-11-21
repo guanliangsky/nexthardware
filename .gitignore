@@ -35,3 +35,10 @@ yarn-error.log*
 next-env.d.ts
 
 .env.local
+
+# credentials (keep secure!)
+/credentials/
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json

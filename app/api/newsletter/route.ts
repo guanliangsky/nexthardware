@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { sendEmailViaGmail } from "@/lib/gmail";
 
 // Initialize Supabase client
 // Get these from https://supabase.com/dashboard after creating a project
@@ -16,37 +17,25 @@ if (useSupabase) {
 
 // Send notification email to admin when someone subscribes
 async function sendNotificationEmail(email: string): Promise<boolean> {
-  const resendApiKey = process.env.RESEND_API_KEY;
-  // Resend free account only allows sending to account owner's email
-  // Use account owner email until domain is verified
-  // Trim and clean email to remove any newlines or extra whitespace
+  // Get recipient email from environment variable
   const adminEmail = (process.env.CONTACT_EMAIL || "guanliangsky@gmail.com").trim().replace(/\n/g, "").replace(/\r/g, "");
 
-  if (!resendApiKey) {
-    console.warn("⚠️  Resend API key not configured. Email notification skipped.");
-    return false;
-  }
+  console.log("📧 Sending newsletter subscription notification via Gmail API...");
+  console.log("📧 To:", adminEmail);
 
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${resendApiKey}`,
-      },
-      body: JSON.stringify({
-        from: "Next Hardware <onboarding@resend.dev>",
-        to: adminEmail,
-        subject: "New Newsletter Subscriber",
-        html: `
-          <h2>New Newsletter Subscriber</h2>
-          <p>A new person has subscribed to your newsletter!</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Subscribed at:</strong> ${new Date().toLocaleString()}</p>
-          <hr>
-          <p><small>You can manage subscribers at: <a href="https://nexthardware.io/admin/subscribers">Admin Dashboard</a></small></p>
-        `,
-        text: `
+    const emailSent = await sendEmailViaGmail({
+      to: adminEmail,
+      subject: "New Newsletter Subscriber",
+      html: `
+        <h2>New Newsletter Subscriber</h2>
+        <p>A new person has subscribed to your newsletter!</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subscribed at:</strong> ${new Date().toLocaleString()}</p>
+        <hr>
+        <p><small>You can manage subscribers at: <a href="https://nexthardware.io/admin/subscribers">Admin Dashboard</a></small></p>
+      `,
+      text: `
 New Newsletter Subscriber
 
 A new person has subscribed to your newsletter!
@@ -55,19 +44,18 @@ Email: ${email}
 Subscribed at: ${new Date().toLocaleString()}
 
 You can manage subscribers at: https://nexthardware.io/admin/subscribers
-        `,
-      }),
+      `,
     });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("Resend API error:", error);
+    if (emailSent) {
+      console.log("✅ Gmail API: Newsletter notification sent successfully");
+      return true;
+    } else {
+      console.error("❌ Gmail API: Newsletter notification failed");
       return false;
     }
-
-    return true;
   } catch (error) {
-    console.error("Email sending error:", error);
+    console.error("❌ Gmail API error:", error);
     return false;
   }
 }
