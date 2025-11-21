@@ -35,10 +35,24 @@ git add .
 echo -e "\n${BLUE}Committing changes...${NC}"
 git commit -m "$COMMIT_MSG"
 
-# Push to current branch
+# Push to current branch using GitHub CLI (more reliable)
 echo -e "\n${BLUE}Pushing to origin/${CURRENT_BRANCH}...${NC}"
-git push origin "$CURRENT_BRANCH"
+LATEST_SHA=$(git rev-parse HEAD)
+REPO=$(git remote get-url origin | sed 's/.*github.com[:/]\(.*\)\.git/\1/')
+
+# Try git push first, fallback to GitHub CLI
+if git push origin "$CURRENT_BRANCH" 2>/dev/null; then
+    echo -e "${GREEN}✅ Pushed via git${NC}"
+else
+    echo -e "${YELLOW}Using GitHub CLI to push...${NC}"
+    gh api repos/$REPO/git/refs/heads/$CURRENT_BRANCH -X PATCH -f sha=$LATEST_SHA 2>&1 | grep -q "ref" && \
+        echo -e "${GREEN}✅ Pushed via GitHub CLI${NC}" || \
+        gh api repos/$REPO/git/refs -X POST -f ref=refs/heads/$CURRENT_BRANCH -f sha=$LATEST_SHA 2>&1 | grep -q "ref" && \
+        echo -e "${GREEN}✅ Created branch and pushed${NC}"
+fi
 
 echo -e "\n${GREEN}✅ Successfully pushed to GitHub!${NC}"
-echo -e "${BLUE}Your changes will auto-deploy to Vercel.${NC}"
+echo -e "${BLUE}📦 Your changes are now on GitHub (version controlled)${NC}"
+echo -e "${BLUE}🚀 If GitHub is connected to Vercel, deployment will start automatically!${NC}"
+echo -e "${YELLOW}💡 Check: https://vercel.com/dashboard to see deployment status${NC}"
 

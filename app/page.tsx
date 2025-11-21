@@ -26,3 +26,4 @@ export default function Home() {
   );
 }
 
+<!-- Auto-deploy test - Thu Nov 20 21:19:11 PST 2025 -->

@@ -18,20 +18,24 @@ export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
 
-    // Validate email
-    if (!email || !email.includes("@")) {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email.trim())) {
       return NextResponse.json(
         { error: "Invalid email address" },
         { status: 400 }
       );
     }
+    
+    // Trim and lowercase email for consistency
+    const normalizedEmail = email.trim().toLowerCase();
 
     // Try to save to Supabase if configured
     if (useSupabase && supabase) {
       try {
         const { error } = await supabase
           .from("newsletter_subscribers")
-          .insert([{ email, subscribed_at: new Date().toISOString() }]);
+          .insert([{ email: normalizedEmail, subscribed_at: new Date().toISOString() }]);
 
         if (error) {
           // If email already exists, that's okay
