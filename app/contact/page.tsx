@@ -1,9 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -14,6 +23,43 @@ export default function Contact() {
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
+
+  // Load reCAPTCHA script
+  useEffect(() => {
+    const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    
+    if (!recaptchaSiteKey) {
+      // reCAPTCHA not configured, form will work without it
+      return;
+    }
+
+    // Check if script is already loaded
+    if (window.grecaptcha) {
+      setRecaptchaLoaded(true);
+      return;
+    }
+
+    // Load reCAPTCHA script
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      window.grecaptcha.ready(() => {
+        setRecaptchaLoaded(true);
+      });
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup: remove script if component unmounts
+      const existingScript = document.querySelector(`script[src*="recaptcha"]`);
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,13 +67,39 @@ export default function Contact() {
     setErrorMessage("");
 
     try {
-      // For now, we'll use mailto: link
-      // Later you can add a contact form API endpoint
-      const mailtoLink = `mailto:hello@nexthardware.io?subject=${encodeURIComponent(formData.subject || "Contact from Next Hardware Website")}&body=${encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-      )}`;
+      // Get reCAPTCHA token if configured
+      let recaptchaToken: string | undefined;
+      const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
       
-      window.location.href = mailtoLink;
+      if (recaptchaSiteKey && recaptchaLoaded && window.grecaptcha) {
+        try {
+          recaptchaToken = await window.grecaptcha.execute(recaptchaSiteKey, {
+            action: "contact_form",
+          });
+        } catch (recaptchaError) {
+          console.warn("reCAPTCHA error:", recaptchaError);
+          // Continue without reCAPTCHA if it fails
+        }
+      }
+
+      // Send to API
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setStatus("error");
+        setErrorMessage(data.error || "Failed to send message. Please try again.");
+        return;
+      }
+
       setStatus("success");
       
       // Reset form after a delay
@@ -210,7 +282,7 @@ export default function Contact() {
 
                 {status === "success" && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-md text-green-700 text-sm">
-                    ✓ Message prepared! Your email client should open.
+                    ✓ Your message has been sent successfully! We'll get back to you soon.
                   </div>
                 )}
 
@@ -230,7 +302,7 @@ export default function Contact() {
               </form>
 
               <p className="mt-4 text-xs text-slate-500 text-center">
-                This will open your email client to send the message
+                Your message will be saved and we'll receive an email notification
               </p>
             </motion.div>
           </div>
