@@ -50,9 +50,14 @@ async function sendEmailNotification(formData: {
   const recipientEmail = process.env.CONTACT_EMAIL || "guanliangsky@gmail.com";
 
   if (!resendApiKey) {
-    console.warn("⚠️  Resend API key not configured. Email notification skipped.");
+    console.error("❌ Resend API key not configured. Email notification skipped.");
+    console.error("❌ RESEND_API_KEY environment variable is missing!");
     return false;
   }
+  
+  console.log("📧 Attempting to send email notification...");
+  console.log("📧 To:", recipientEmail);
+  console.log("📧 From: Next Hardware <onboarding@resend.dev>");
 
   try {
     const response = await fetch("https://api.resend.com/emails", {
@@ -90,13 +95,17 @@ ${formData.message}
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("Resend API error:", error);
-      console.error("Resend API response status:", response.status);
+      console.error("❌ Resend API error:", error);
+      console.error("❌ Resend API response status:", response.status);
+      console.error("❌ Resend API URL:", "https://api.resend.com/emails");
+      console.error("❌ Resend API Key present:", !!resendApiKey);
+      console.error("❌ Recipient email:", recipientEmail);
       return false;
     }
 
     const result = await response.json();
-    console.log("Resend API success:", result);
+    console.log("✅ Resend API success:", JSON.stringify(result, null, 2));
+    console.log("✅ Email sent to:", recipientEmail);
     return true;
   } catch (error) {
     console.error("Email sending error:", error);
