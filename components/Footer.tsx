@@ -58,6 +58,10 @@ export default function Footer() {
               transition={{ duration: 0.3, delay: 0.2 }}
             >
               <div className="flex gap-3 text-xs">
+                <a href="/contact" className="text-slate-600 hover:text-slate-900 transition-colors">
+                  Contact
+                </a>
+                <span className="text-slate-400">•</span>
                 <a href="/privacy" className="text-slate-600 hover:text-slate-900 transition-colors">
                   Privacy
                 </a>

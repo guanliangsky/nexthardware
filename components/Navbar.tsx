@@ -43,6 +43,9 @@ export default function Navbar() {
             <a href="#showcase" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
               Community
             </a>
+            <a href="/contact" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              Contact
+            </a>
             <a href="#join" className="px-4 py-1.5 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors text-sm font-medium">
               Join
             </a>
@@ -93,6 +96,13 @@ export default function Navbar() {
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
                 >
                   Community
+                </a>
+                <a
+                  href="/contact"
+                  onClick={handleLinkClick}
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                >
+                  Contact
                 </a>
                 <a
                   href="#join"
