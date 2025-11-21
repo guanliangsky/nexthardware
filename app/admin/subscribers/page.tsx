@@ -20,18 +20,23 @@ export default function AdminSubscribers() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Verify session with server
-        const response = await fetch("/api/admin/subscribers");
+        // Verify session with server using cookies
+        // The cookie is automatically sent with the request
+        const response = await fetch("/api/admin/subscribers", {
+          credentials: "include", // Important: Include cookies
+        });
         if (response.ok) {
           setAuthenticated(true);
           fetchSubscribers();
         } else {
-          // Session invalid, clear localStorage
+          // Session invalid, clear any client-side state
           localStorage.removeItem("admin_authenticated");
+          setAuthenticated(false);
         }
       } catch (err) {
         // Not authenticated
         localStorage.removeItem("admin_authenticated");
+        setAuthenticated(false);
       }
     };
     checkAuth();
@@ -56,6 +61,7 @@ export default function AdminSubscribers() {
       const response = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // Important: Include cookies
         body: JSON.stringify({ password }),
       });
 
@@ -68,8 +74,8 @@ export default function AdminSubscribers() {
 
       if (data.success) {
         setAuthenticated(true);
-        // Persist authentication in localStorage
-        localStorage.setItem("admin_authenticated", "true");
+        // Session is stored in HTTP-only cookie by server
+        // No need for localStorage (cookie is more secure)
         fetchSubscribers();
       }
     } catch (err) {
@@ -79,9 +85,10 @@ export default function AdminSubscribers() {
 
   const handleLogout = async () => {
     try {
-      // Clear server-side session
+      // Clear server-side session cookie
       await fetch("/api/admin/auth", {
         method: "DELETE",
+        credentials: "include", // Include cookies
       });
     } catch (err) {
       console.error("Logout error:", err);
@@ -96,8 +103,17 @@ export default function AdminSubscribers() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/admin/subscribers");
+      // Include credentials to send cookies
+      const response = await fetch("/api/admin/subscribers", {
+        credentials: "include", // Important: Include cookies for authentication
+      });
       if (!response.ok) {
+        if (response.status === 401) {
+          // Unauthorized - session expired
+          setAuthenticated(false);
+          localStorage.removeItem("admin_authenticated");
+          throw new Error("Session expired. Please login again.");
+        }
         throw new Error("Failed to fetch subscribers");
       }
 
@@ -118,6 +134,7 @@ export default function AdminSubscribers() {
     try {
       const response = await fetch(`/api/admin/subscribers/${id}`, {
         method: "DELETE",
+        credentials: "include", // Include cookies for authentication
       });
 
       if (!response.ok) {
