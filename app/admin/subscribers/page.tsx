@@ -207,26 +207,32 @@ export default function AdminSubscribers() {
               <h1 className="text-3xl font-bold text-slate-900">Newsletter Subscribers</h1>
               <p className="text-slate-600 mt-1">Total: {subscribers.length} subscribers</p>
             </div>
-            <div className="flex gap-3">
-              <button
-                onClick={fetchSubscribers}
-                className="px-4 py-2 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300 transition-colors text-sm"
-              >
-                Refresh
-              </button>
-              <button
-                onClick={exportCSV}
-                className="px-4 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors text-sm"
-              >
-                Export CSV
-              </button>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm"
-              >
-                Logout
-              </button>
-            </div>
+                 <div className="flex gap-3">
+                     <a
+                       href="/admin/contact-messages"
+                       className="px-4 py-2 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300 transition-colors text-sm"
+                     >
+                       Contact Messages
+                     </a>
+                     <button
+                       onClick={fetchSubscribers}
+                       className="px-4 py-2 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300 transition-colors text-sm"
+                     >
+                       Refresh
+                     </button>
+                     <button
+                       onClick={exportCSV}
+                       className="px-4 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors text-sm"
+                     >
+                       Export CSV
+                     </button>
+                     <button
+                       onClick={handleLogout}
+                       className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm"
+                     >
+                       Logout
+                     </button>
+                   </div>
           </div>
 
           {error && (
