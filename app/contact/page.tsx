@@ -130,7 +130,7 @@ export default function Contact() {
               Get in Touch
             </h1>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Have a question, suggestion, or want to collaborate? We'd love to hear from you.
+              Have a question, suggestion, or want to collaborate? We&apos;d love to hear from you.
             </p>
           </motion.div>
 
@@ -282,7 +282,7 @@ export default function Contact() {
 
                 {status === "success" && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-md text-green-700 text-sm">
-                    ✓ Your message has been sent successfully! We'll get back to you soon.
+                    ✓ Your message has been sent successfully! We&apos;ll get back to you soon.
                   </div>
                 )}
 
@@ -302,7 +302,7 @@ export default function Contact() {
               </form>
 
               <p className="mt-4 text-xs text-slate-500 text-center">
-                Your message will be saved and we'll receive an email notification
+                Your message will be saved and we&apos;ll receive an email notification
               </p>
             </motion.div>
           </div>
