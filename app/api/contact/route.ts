@@ -60,7 +60,7 @@ async function sendEmailNotification(formData: {
         Authorization: `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: "Next Hardware <noreply@nexthardware.io>",
+        from: "Next Hardware <onboarding@resend.dev>",
         to: recipientEmail,
         replyTo: formData.email,
         subject: formData.subject || `Contact Form: ${formData.name}`,
