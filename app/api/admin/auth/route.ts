@@ -14,8 +14,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Compare passwords securely (constant-time comparison)
-    const isValid = password === ADMIN_PASSWORD;
+    // Trim whitespace from input password
+    const trimmedPassword = password.trim();
+    const trimmedAdminPassword = ADMIN_PASSWORD.trim();
+
+    // Compare passwords (trimmed to handle whitespace issues)
+    const isValid = trimmedPassword === trimmedAdminPassword;
+
+    // Debug logging (only in development)
+    if (process.env.NODE_ENV === "development") {
+      console.log("Password check:", {
+        inputLength: trimmedPassword.length,
+        expectedLength: trimmedAdminPassword.length,
+        match: isValid,
+      });
+    }
 
     if (!isValid) {
       return NextResponse.json(
