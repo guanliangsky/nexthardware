@@ -43,8 +43,12 @@ export async function verifyAdminSession(request: NextRequest): Promise<boolean>
 }
 
 export async function getAdminSessionFromCookies(): Promise<string | null> {
-  const cookieStore = await cookies();
-  return cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
+  try {
+    const cookieStore = await cookies();
+    return cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
+  } catch {
+    return null;
+  }
 }
 
 export function getSessionCookieName(): string {
