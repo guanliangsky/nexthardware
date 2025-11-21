@@ -6,6 +6,7 @@ import Logo from "./Logo";
 const socialLinks = [
   { name: "Twitter/X", url: "https://x.com/nexthardware", label: "X" },
   { name: "GitHub", url: "https://github.com/nexthardware", label: "GitHub" },
+  { name: "YouTube", url: "https://youtube.com/@nexthardware", label: "YouTube" },
   { name: "Luma", url: "https://luma.com/NextHardware", label: "Luma" },
   { name: "Discord", url: "https://discord.gg/d5dTjjVD", label: "Discord" },
 ];
