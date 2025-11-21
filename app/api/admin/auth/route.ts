@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// Admin password - stored server-side only (NOT exposed to client)
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "nexthardware2024";
+import { authenticateAdmin, createAdminSession, getSessionCookieName } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,21 +12,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Trim whitespace from input password
-    const trimmedPassword = password.trim();
-    const trimmedAdminPassword = ADMIN_PASSWORD.trim();
-
-    // Compare passwords (trimmed to handle whitespace issues)
-    const isValid = trimmedPassword === trimmedAdminPassword;
-
-    // Debug logging (only in development)
-    if (process.env.NODE_ENV === "development") {
-      console.log("Password check:", {
-        inputLength: trimmedPassword.length,
-        expectedLength: trimmedAdminPassword.length,
-        match: isValid,
-      });
-    }
+    // Verify password
+    const isValid = await authenticateAdmin(password);
 
     if (!isValid) {
       return NextResponse.json(
@@ -37,8 +22,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Return success (you could add session/JWT here for better security)
-    return NextResponse.json({ success: true });
+    // Create secure session token
+    const sessionToken = await createAdminSession();
+
+    // Set secure HTTP-only cookie
+    const response = NextResponse.json({ success: true });
+    response.cookies.set(getSessionCookieName(), sessionToken, {
+      httpOnly: true, // Prevents JavaScript access
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: "strict", // CSRF protection
+      maxAge: 60 * 60 * 24, // 24 hours
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("Auth error:", error);
     return NextResponse.json(
@@ -46,5 +43,12 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+// Logout endpoint
+export async function DELETE(request: NextRequest) {
+  const response = NextResponse.json({ success: true });
+  response.cookies.delete(getSessionCookieName());
+  return response;
 }
 

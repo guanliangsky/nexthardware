@@ -16,13 +16,25 @@ export default function AdminSubscribers() {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
 
-  // Check for persisted authentication on mount
+  // Check for authentication on mount (verify with server)
   useEffect(() => {
-    const savedAuth = localStorage.getItem("admin_authenticated");
-    if (savedAuth === "true") {
-      setAuthenticated(true);
-      fetchSubscribers();
-    }
+    const checkAuth = async () => {
+      try {
+        // Verify session with server
+        const response = await fetch("/api/admin/subscribers");
+        if (response.ok) {
+          setAuthenticated(true);
+          fetchSubscribers();
+        } else {
+          // Session invalid, clear localStorage
+          localStorage.removeItem("admin_authenticated");
+        }
+      } catch (err) {
+        // Not authenticated
+        localStorage.removeItem("admin_authenticated");
+      }
+    };
+    checkAuth();
   }, []);
 
   // Auto-refresh subscribers every 10 seconds when authenticated
@@ -65,7 +77,16 @@ export default function AdminSubscribers() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      // Clear server-side session
+      await fetch("/api/admin/auth", {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+    // Clear client-side state
     setAuthenticated(false);
     localStorage.removeItem("admin_authenticated");
   };

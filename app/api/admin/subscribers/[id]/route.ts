@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { verifyAdminSession } from "@/lib/auth";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
@@ -14,6 +15,15 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    // SECURITY: Verify admin session
+    const isAuthenticated = await verifyAdminSession(request);
+    if (!isAuthenticated) {
+      return NextResponse.json(
+        { error: "Unauthorized - Admin authentication required" },
+        { status: 401 }
+      );
+    }
+
     if (!supabase) {
       return NextResponse.json(
         { error: "Supabase not configured" },
