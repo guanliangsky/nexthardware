@@ -3,10 +3,9 @@
 import { motion } from "framer-motion";
 import Logo from "./Logo";
 
-// TODO: Replace with your actual social media URLs
 const socialLinks = [
-  { name: "Twitter/X", url: "#", label: "X" }, // Replace with: https://twitter.com/nexthardware
-  { name: "GitHub", url: "#", label: "GitHub" }, // Replace with: https://github.com/nexthardware
+  { name: "Twitter/X", url: "https://x.com/nexthardware", label: "X" },
+  { name: "GitHub", url: "https://github.com/nexthardware", label: "GitHub" },
   { name: "Luma", url: "https://luma.com/NextHardware", label: "Luma" },
   { name: "Discord", url: "https://discord.gg/d5dTjjVD", label: "Discord" },
 ];
