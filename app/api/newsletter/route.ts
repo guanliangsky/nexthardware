@@ -14,6 +14,61 @@ if (useSupabase) {
   supabase = createClient(supabaseUrl, supabaseKey);
 }
 
+// Send notification email to admin when someone subscribes
+async function sendNotificationEmail(email: string): Promise<boolean> {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const adminEmail = process.env.CONTACT_EMAIL || "hello@nexthardware.io";
+
+  if (!resendApiKey) {
+    console.warn("⚠️  Resend API key not configured. Email notification skipped.");
+    return false;
+  }
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${resendApiKey}`,
+      },
+      body: JSON.stringify({
+        from: "Next Hardware <noreply@nexthardware.io>",
+        to: adminEmail,
+        subject: "New Newsletter Subscriber",
+        html: `
+          <h2>New Newsletter Subscriber</h2>
+          <p>A new person has subscribed to your newsletter!</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Subscribed at:</strong> ${new Date().toLocaleString()}</p>
+          <hr>
+          <p><small>You can manage subscribers at: <a href="https://nexthardware.io/admin/subscribers">Admin Dashboard</a></small></p>
+        `,
+        text: `
+New Newsletter Subscriber
+
+A new person has subscribed to your newsletter!
+
+Email: ${email}
+Subscribed at: ${new Date().toLocaleString()}
+
+You can manage subscribers at: https://nexthardware.io/admin/subscribers
+        `,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("Resend API error:", error);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Email sending error:", error);
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
@@ -64,6 +119,11 @@ export async function POST(request: NextRequest) {
             { status: 500 }
           );
         }
+
+        // Send notification email to admin (non-blocking)
+        sendNotificationEmail(normalizedEmail).catch((err) => {
+          console.error("Failed to send notification email:", err);
+        });
 
         return NextResponse.json(
           { message: "Successfully subscribed to newsletter" },
