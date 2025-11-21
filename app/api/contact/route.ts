@@ -49,6 +49,10 @@ async function sendEmailNotification(formData: {
   // Use account owner email until domain is verified
   const recipientEmail = process.env.CONTACT_EMAIL || "guanliangsky@gmail.com";
 
+  console.log("🔍 Checking Resend API key...");
+  console.log("🔍 RESEND_API_KEY present:", !!resendApiKey);
+  console.log("🔍 RESEND_API_KEY length:", resendApiKey ? resendApiKey.length : 0);
+  
   if (!resendApiKey) {
     console.error("❌ Resend API key not configured. Email notification skipped.");
     console.error("❌ RESEND_API_KEY environment variable is missing!");
@@ -58,6 +62,7 @@ async function sendEmailNotification(formData: {
   console.log("📧 Attempting to send email notification...");
   console.log("📧 To:", recipientEmail);
   console.log("📧 From: Next Hardware <onboarding@resend.dev>");
+  console.log("📧 Resend API Key (first 10 chars):", resendApiKey.substring(0, 10) + "...");
 
   try {
     const response = await fetch("https://api.resend.com/emails", {
@@ -168,18 +173,15 @@ export async function POST(request: NextRequest) {
           );
         }
 
-        // Send email notification (non-blocking)
-        sendEmailNotification(formData)
-          .then((success) => {
-            if (success) {
-              console.log("✅ Email notification sent successfully");
-            } else {
-              console.error("❌ Email notification failed (returned false)");
-            }
-          })
-          .catch((err) => {
-            console.error("❌ Failed to send email notification:", err);
-          });
+        // Send email notification (synchronous to catch errors)
+        console.log("📧 Starting email notification...");
+        const emailSent = await sendEmailNotification(formData);
+        
+        if (emailSent) {
+          console.log("✅ Email notification sent successfully");
+        } else {
+          console.error("❌ Email notification failed (returned false)");
+        }
 
         return NextResponse.json(
           { message: "Your message has been sent successfully!" },
