@@ -47,7 +47,8 @@ async function sendEmailNotification(formData: {
   const resendApiKey = process.env.RESEND_API_KEY;
   // Resend free account only allows sending to account owner's email
   // Use account owner email until domain is verified
-  const recipientEmail = process.env.CONTACT_EMAIL || "guanliangsky@gmail.com";
+  // Trim and clean email to remove any newlines or extra whitespace
+  const recipientEmail = (process.env.CONTACT_EMAIL || "guanliangsky@gmail.com").trim().replace(/\n/g, "").replace(/\r/g, "");
 
   console.log("🔍 Checking Resend API key...");
   console.log("🔍 RESEND_API_KEY present:", !!resendApiKey);
