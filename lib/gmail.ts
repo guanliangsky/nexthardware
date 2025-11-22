@@ -15,14 +15,15 @@ export async function sendEmailViaGmail(options: {
     // Try environment variable first (for Vercel), then local file (for development)
     let credentials;
     
-    // Option 1: From environment variable (Vercel/production)
-    const gmailServiceAccountJson = process.env.GMAIL_SERVICE_ACCOUNT_JSON;
-    if (gmailServiceAccountJson) {
+    // Option 1: From environment variable (Vercel/production) - base64 encoded
+    const gmailServiceAccountJsonBase64 = process.env.GMAIL_SERVICE_ACCOUNT_JSON_BASE64;
+    if (gmailServiceAccountJsonBase64) {
       try {
-        credentials = JSON.parse(gmailServiceAccountJson);
-        console.log("✅ Loaded Gmail credentials from environment variable");
+        const decoded = Buffer.from(gmailServiceAccountJsonBase64, "base64").toString("utf8");
+        credentials = JSON.parse(decoded);
+        console.log("✅ Loaded Gmail credentials from environment variable (base64)");
       } catch (error) {
-        console.error("❌ Failed to parse GMAIL_SERVICE_ACCOUNT_JSON:", error);
+        console.error("❌ Failed to decode/parse GMAIL_SERVICE_ACCOUNT_JSON_BASE64:", error);
         return false;
       }
     } else {
