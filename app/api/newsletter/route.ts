@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { sendEmailViaGmail } from "@/lib/gmail";
+// Gmail API removed - newsletter notifications can be handled via Supabase webhooks or other services
 
 // Initialize Supabase client
 // Get these from https://supabase.com/dashboard after creating a project
@@ -17,45 +17,37 @@ if (useSupabase) {
 
 // Send notification email to admin when someone subscribes
 async function sendNotificationEmail(email: string): Promise<boolean> {
-  // Get recipient email from environment variable
-  const adminEmail = (process.env.CONTACT_EMAIL || "guanliangsky@gmail.com").trim().replace(/\n/g, "").replace(/\r/g, "");
-
-  console.log("📧 Sending newsletter subscription notification via Gmail API...");
-  console.log("📧 To:", adminEmail);
+  const formspreeEndpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "";
+  
+  if (!formspreeEndpoint) {
+    console.log("📧 Newsletter subscription notification (Formspree not configured):", email);
+    return false;
+  }
 
   try {
-    const emailSent = await sendEmailViaGmail({
-      to: adminEmail,
-      subject: "New Newsletter Subscriber",
-      html: `
-        <h2>New Newsletter Subscriber</h2>
-        <p>A new person has subscribed to your newsletter!</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subscribed at:</strong> ${new Date().toLocaleString()}</p>
-        <hr>
-        <p><small>You can manage subscribers at: <a href="https://nexthardware.io/admin/subscribers">Admin Dashboard</a></small></p>
-      `,
-      text: `
-New Newsletter Subscriber
-
-A new person has subscribed to your newsletter!
-
-Email: ${email}
-Subscribed at: ${new Date().toLocaleString()}
-
-You can manage subscribers at: https://nexthardware.io/admin/subscribers
-      `,
+    console.log("📧 Sending newsletter subscription notification via Formspree...");
+    
+    // Send notification email to admin
+    const response = await fetch(formspreeEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subject: "New Newsletter Subscriber",
+        email: email,
+        message: `A new person has subscribed to your newsletter!\n\nEmail: ${email}\nSubscribed at: ${new Date().toLocaleString()}\n\nYou can view all subscribers in your admin dashboard: https://nexthardware.io/admin/subscribers`,
+        _replyto: email, // So you can reply directly
+      }),
     });
 
-    if (emailSent) {
-      console.log("✅ Gmail API: Newsletter notification sent successfully");
-      return true;
-    } else {
-      console.error("❌ Gmail API: Newsletter notification failed");
+    if (!response.ok) {
+      console.error("❌ Formspree notification failed:", response.status);
       return false;
     }
+
+    console.log("✅ Newsletter subscription notification sent successfully");
+    return true;
   } catch (error) {
-    console.error("❌ Gmail API error:", error);
+    console.error("❌ Failed to send newsletter notification:", error);
     return false;
   }
 }

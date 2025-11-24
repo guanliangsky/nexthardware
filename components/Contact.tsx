@@ -1,108 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-    };
-  }
-}
+import ContactForm from "./ContactForm";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
-
-  // Load reCAPTCHA script
-  useEffect(() => {
-    const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-    
-    if (!recaptchaSiteKey) {
-      return;
-    }
-
-    if (window.grecaptcha) {
-      setRecaptchaLoaded(true);
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      window.grecaptcha.ready(() => {
-        setRecaptchaLoaded(true);
-      });
-    };
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.querySelector(`script[src*="recaptcha"]`);
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    setErrorMessage("");
-
-    try {
-      let recaptchaToken: string | undefined;
-      const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-      
-      if (recaptchaSiteKey && recaptchaLoaded && window.grecaptcha) {
-        try {
-          recaptchaToken = await window.grecaptcha.execute(recaptchaSiteKey, {
-            action: "contact_form",
-          });
-        } catch (recaptchaError) {
-          console.warn("reCAPTCHA error:", recaptchaError);
-        }
-      }
-
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          recaptchaToken,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setStatus("error");
-        setErrorMessage(data.error || "Failed to send message. Please try again.");
-        return;
-      }
-
-      setStatus("success");
-      
-      setTimeout(() => {
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setStatus("idle");
-      }, 3000);
-    } catch (err) {
-      setStatus("error");
-      setErrorMessage("Failed to send message. Please try again.");
-    }
-  };
-
   return (
     <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="container mx-auto max-w-4xl">
@@ -204,7 +105,7 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Contact Form - FoxyForm */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -213,83 +114,8 @@ export default function Contact() {
           >
             <h3 className="text-2xl font-semibold mb-6 text-slate-900">Send a Message</h3>
             
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="contact-name" className="block text-sm font-medium text-slate-700 mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="contact-name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="contact-email" className="block text-sm font-medium text-slate-700 mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="contact-email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="contact-subject" className="block text-sm font-medium text-slate-700 mb-2">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="contact-subject"
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900"
-                  placeholder="What's this about?"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="contact-message" className="block text-sm font-medium text-slate-700 mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  rows={6}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900 resize-none"
-                  required
-                />
-              </div>
-
-              {status === "success" && (
-                <div className="p-4 bg-green-50 border border-green-200 rounded-md text-green-700 text-sm">
-                  ✓ Your message has been sent successfully! We&apos;ll get back to you soon.
-                </div>
-              )}
-
-              {status === "error" && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">
-                  {errorMessage || "Something went wrong. Please try again."}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="w-full px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {status === "sending" ? "Sending..." : "Send Message"}
-              </button>
-            </form>
+            {/* Contact Form - Using API Route (No CAPTCHA issues!) */}
+            <ContactForm />
 
             <p className="mt-4 text-xs text-slate-500 text-center">
               Your message will be saved and we&apos;ll receive an email notification

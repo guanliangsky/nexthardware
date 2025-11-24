@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { sendEmailViaGmail } from "@/lib/gmail";
+// Gmail API removed - using FoxyForm for contact form submissions
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -38,60 +38,17 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 }
 
-// Send email notification using Gmail API
+// Email notifications are now handled by FoxyForm
+// This function is kept for backward compatibility but does nothing
 async function sendEmailNotification(formData: {
   name: string;
   email: string;
   subject: string;
   message: string;
 }): Promise<boolean> {
-  // Get recipient email from environment variable
-  const recipientEmail = (process.env.CONTACT_EMAIL || "guanliangsky@gmail.com").trim().replace(/\n/g, "").replace(/\r/g, "");
-  
-  // Get sender email from environment variable (Gmail address)
-  const senderEmail = process.env.GMAIL_SENDER_EMAIL || "guanliangsky@gmail.com";
-
-  console.log("📧 Attempting to send email via Gmail API...");
-  console.log("📧 To:", recipientEmail);
-  console.log("📧 From:", senderEmail);
-
-  try {
-    const emailSent = await sendEmailViaGmail({
-      to: recipientEmail,
-      subject: formData.subject || `Contact Form: ${formData.name}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${formData.name}</p>
-        <p><strong>Email:</strong> ${formData.email}</p>
-        <p><strong>Subject:</strong> ${formData.subject || "No subject"}</p>
-        <hr>
-        <p><strong>Message:</strong></p>
-        <p>${formData.message.replace(/\n/g, "<br>")}</p>
-      `,
-      text: `
-New Contact Form Submission
-
-Name: ${formData.name}
-Email: ${formData.email}
-Subject: ${formData.subject || "No subject"}
-
-Message:
-${formData.message}
-      `,
-      replyTo: formData.email,
-    });
-
-    if (emailSent) {
-      console.log("✅ Gmail API: Email sent successfully");
-      return true;
-    } else {
-      console.error("❌ Gmail API: Email sending failed");
-      return false;
-    }
-  } catch (error) {
-    console.error("❌ Gmail API error:", error);
-    return false;
-  }
+  console.log("📧 Contact form submission (handled by FoxyForm):", formData);
+  // FoxyForm handles email delivery directly
+  return true;
 }
 
 export async function POST(request: NextRequest) {
@@ -184,7 +141,7 @@ export async function POST(request: NextRequest) {
 
     // Last resort: Log to console
     console.log("Contact form submission (not saved):", formData);
-    console.log("⚠️  Set up Supabase or Gmail API to save/send messages.");
+    console.log("⚠️  Set up Supabase to save messages. Email delivery handled by FoxyForm.");
 
     return NextResponse.json(
       { message: "Your message has been received. We'll get back to you soon!" },
