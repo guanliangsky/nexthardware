@@ -200,10 +200,31 @@ export default function RootLayout({
                         el.parentElement?.remove();
                       });
                       
-                      // Remove any element with "Select Language" text
+                      // Remove any element with "Select Language" text (more aggressive)
                       document.querySelectorAll('*').forEach(el => {
-                        if (el.textContent && el.textContent.includes('Select Language')) {
+                        const text = el.textContent || el.innerText || '';
+                        if (text.includes('Select Language') || 
+                            text.includes('选择语言') ||
+                            text.trim() === 'Select Language' ||
+                            el.getAttribute('title') === 'Select Language') {
+                          el.style.display = 'none';
                           el.remove();
+                          // Also remove parent if it's a wrapper
+                          if (el.parentElement && 
+                              (el.parentElement.id?.includes('google') || 
+                               el.parentElement.className?.includes('goog'))) {
+                            el.parentElement.remove();
+                          }
+                        }
+                      });
+                      
+                      // Remove spans with chevron/dropdown indicators
+                      document.querySelectorAll('span').forEach(el => {
+                        if (el.textContent && (el.textContent.includes('▼') || el.textContent.includes('▼'))) {
+                          const parent = el.closest('div, span');
+                          if (parent && (parent.id?.includes('google') || parent.className?.includes('goog'))) {
+                            parent.remove();
+                          }
                         }
                       });
                       
@@ -222,11 +243,21 @@ export default function RootLayout({
                       });
                     }
                     
-                    // Run immediately
+                    // Run immediately - even before DOM is ready
+                    removeTranslateElements();
+                    
+                    // Run when DOM is ready
                     if (document.body) {
                       removeTranslateElements();
                     } else {
                       document.addEventListener('DOMContentLoaded', removeTranslateElements);
+                    }
+                    
+                    // Run when document is interactive
+                    if (document.readyState === 'loading') {
+                      document.addEventListener('DOMContentLoaded', removeTranslateElements);
+                    } else {
+                      removeTranslateElements();
                     }
                     
                     // Run on DOM changes
