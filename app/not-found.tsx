@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { getServerLocale } from "@/lib/getServerLocale";
-import { useTranslations } from "@/lib/useTranslations";
+import { getTranslations } from "@/lib/useTranslations";
 
 export default async function NotFound() {
   const locale = await getServerLocale();
-  const t = useTranslations(locale);
+  const t = getTranslations(locale);
   
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">

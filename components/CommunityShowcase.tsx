@@ -65,7 +65,7 @@ export default function CommunityShowcase() {
               <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 border border-slate-200 group-hover:border-slate-300 transition-colors rounded-lg">
                   <Image
                     src={item.image}
-                    alt={t.communityShowcase.items[item.key].title}
+                    alt={t.communityShowcase.items[item.key as keyof typeof t.communityShowcase.items].title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -74,7 +74,7 @@ export default function CommunityShowcase() {
               <div className="mt-5">
                 <div className="flex items-center justify-between mb-2">
                   <div className="text-xs text-slate-500 uppercase tracking-wider">
-                    {t.communityShowcase.categories[item.category]}
+                    {t.communityShowcase.categories[item.category as keyof typeof t.communityShowcase.categories]}
                   </div>
                   {item.year && (
                     <div className="text-xs text-slate-400">
@@ -83,10 +83,10 @@ export default function CommunityShowcase() {
                   )}
                 </div>
                 <h3 className="text-base font-bold mb-2 text-slate-900 group-hover:text-slate-700 transition-colors">
-                  {t.communityShowcase.items[item.key].title}
+                  {t.communityShowcase.items[item.key as keyof typeof t.communityShowcase.items].title}
                 </h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  {t.communityShowcase.items[item.key].description}
+                  {t.communityShowcase.items[item.key as keyof typeof t.communityShowcase.items].description}
                 </p>
               </div>
             </motion.div>

@@ -135,7 +135,7 @@ export default function Testimonials() {
                 </div>
               </div>
               <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                &quot;{t.testimonials.testimonials[testimonial.key].quote}&quot;
+                &quot;{t.testimonials.testimonials[testimonial.key as keyof typeof t.testimonials.testimonials].quote}&quot;
               </p>
               <p className="text-xs text-slate-500">
                 {t.testimonials.memberSince.replace('{year}', testimonial.joined)}

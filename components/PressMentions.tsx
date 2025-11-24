@@ -69,14 +69,14 @@ export default function PressMentions() {
                   {mention.outlet}
                 </span>
                 <span className="text-xs text-slate-400">
-                  {t.pressMentions.mentions[mention.key].date}
+                  {t.pressMentions.mentions[mention.key as keyof typeof t.pressMentions.mentions].date}
                 </span>
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-slate-700 transition-colors">
-                {t.pressMentions.mentions[mention.key].title}
+                {t.pressMentions.mentions[mention.key as keyof typeof t.pressMentions.mentions].title}
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                {t.pressMentions.mentions[mention.key].excerpt}
+                {t.pressMentions.mentions[mention.key as keyof typeof t.pressMentions.mentions].excerpt}
               </p>
             </motion.a>
           ))}

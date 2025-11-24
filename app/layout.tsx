@@ -6,6 +6,7 @@ import Analytics from "@/components/Analytics";
 import CookieConsent from "@/components/CookieConsent";
 import StructuredData from "@/components/StructuredData";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import GoogleTranslateRemover from "@/components/GoogleTranslateRemover";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const inter = Inter({
@@ -90,50 +91,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Prevent Google Translate from auto-detecting and injecting */}
+        {/* COMPLETELY PREVENT Google Translate */}
         <meta name="google" content="notranslate" />
         <meta name="google-translate-customization" content="false" />
+        <meta httpEquiv="Content-Language" content="en" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
-        {/* Block Google Translate BEFORE anything else loads */}
-        <Script
-          id="block-google-translate"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Block Google Translate immediately
-              (function() {
-                // Prevent Google Translate script from loading
-                const originalAppendChild = Node.prototype.appendChild;
-                Node.prototype.appendChild = function(child) {
-                  if (child && child.src && child.src.includes('translate.google')) {
-                    return child;
-                  }
-                  if (child && child.id && child.id.includes('google_translate')) {
-                    return child;
-                  }
-                  return originalAppendChild.call(this, child);
-                };
-                
-                // Block Google Translate API
-                if (typeof window !== 'undefined') {
-                  Object.defineProperty(window, 'google', {
-                    value: window.google || {},
-                    writable: false,
-                    configurable: false
-                  });
-                  if (window.google) {
-                    Object.defineProperty(window.google, 'translate', {
-                      value: undefined,
-                      writable: false,
-                      configurable: false
-                    });
-                  }
-                }
-              })();
-            `,
-          }}
-        />
         
         {/* Google Analytics - Added for Google verification */}
         {gaId && (
@@ -156,135 +119,14 @@ export default function RootLayout({
         )}
         <ErrorBoundary>
           <LanguageProvider>
+            <GoogleTranslateRemover />
             <StructuredData />
             <Analytics />
             {children}
             <CookieConsent />
             <script
               dangerouslySetInnerHTML={{
-                __html: `
-                  document.body.classList.add('js-loaded');
-                  
-                  // Aggressively prevent Google Translate widget injection
-                  (function() {
-                    // Remove Google Translate API completely
-                    if (window.google && window.google.translate) {
-                      try {
-                        delete window.google.translate;
-                      } catch(e) {}
-                    }
-                    
-                    // Remove any Google Translate elements
-                    function removeTranslateElements() {
-                      // Remove iframes
-                      document.querySelectorAll('iframe[src*="translate.google"]').forEach(el => {
-                        el.remove();
-                        el.parentElement?.remove();
-                      });
-                      
-                      // Remove all Google Translate divs
-                      document.querySelectorAll('div[id*="google_translate"]').forEach(el => {
-                        el.remove();
-                        el.parentElement?.remove();
-                      });
-                      
-                      // Remove Google Translate classes
-                      document.querySelectorAll('div[class*="goog-te"]').forEach(el => {
-                        el.remove();
-                        el.parentElement?.remove();
-                      });
-                      
-                      // Remove select dropdowns
-                      document.querySelectorAll('select[id*="google_translate"]').forEach(el => {
-                        el.remove();
-                        el.parentElement?.remove();
-                      });
-                      
-                      // Remove any element with "Select Language" text (more aggressive)
-                      document.querySelectorAll('*').forEach(el => {
-                        const text = el.textContent || el.innerText || '';
-                        if (text.includes('Select Language') || 
-                            text.includes('选择语言') ||
-                            text.trim() === 'Select Language' ||
-                            el.getAttribute('title') === 'Select Language') {
-                          el.style.display = 'none';
-                          el.remove();
-                          // Also remove parent if it's a wrapper
-                          if (el.parentElement && 
-                              (el.parentElement.id?.includes('google') || 
-                               el.parentElement.className?.includes('goog'))) {
-                            el.parentElement.remove();
-                          }
-                        }
-                      });
-                      
-                      // Remove spans with chevron/dropdown indicators
-                      document.querySelectorAll('span').forEach(el => {
-                        if (el.textContent && (el.textContent.includes('▼') || el.textContent.includes('▼'))) {
-                          const parent = el.closest('div, span');
-                          if (parent && (parent.id?.includes('google') || parent.className?.includes('goog'))) {
-                            parent.remove();
-                          }
-                        }
-                      });
-                      
-                      // Remove any element with google_translate in ID
-                      document.querySelectorAll('*[id*="google_translate"]').forEach(el => {
-                        el.remove();
-                        el.parentElement?.remove();
-                      });
-                      
-                      // Remove spans with "Select Language"
-                      document.querySelectorAll('span').forEach(el => {
-                        if (el.textContent && el.textContent.trim() === 'Select Language') {
-                          el.remove();
-                          el.parentElement?.remove();
-                        }
-                      });
-                    }
-                    
-                    // Run immediately - even before DOM is ready
-                    removeTranslateElements();
-                    
-                    // Run when DOM is ready
-                    if (document.body) {
-                      removeTranslateElements();
-                    } else {
-                      document.addEventListener('DOMContentLoaded', removeTranslateElements);
-                    }
-                    
-                    // Run when document is interactive
-                    if (document.readyState === 'loading') {
-                      document.addEventListener('DOMContentLoaded', removeTranslateElements);
-                    } else {
-                      removeTranslateElements();
-                    }
-                    
-                    // Run on DOM changes
-                    const observer = new MutationObserver(function(mutations) {
-                      mutations.forEach(function(mutation) {
-                        if (mutation.addedNodes.length) {
-                          removeTranslateElements();
-                        }
-                      });
-                    });
-                    
-                    if (document.body) {
-                      observer.observe(document.body, {
-                        childList: true,
-                        subtree: true,
-                        attributes: true,
-                        attributeFilter: ['id', 'class']
-                      });
-                    }
-                    
-                    // Also run periodically as backup
-                    setInterval(removeTranslateElements, 500);
-                    
-                    // Run on window load
-                    window.addEventListener('load', removeTranslateElements);
-                  })();
-                `,
+                __html: `document.body.classList.add('js-loaded');`,
               }}
             />
           </LanguageProvider>

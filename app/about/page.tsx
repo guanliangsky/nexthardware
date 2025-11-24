@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { motion } from "framer-motion";
 import { getServerLocale } from "@/lib/getServerLocale";
-import { useTranslations } from "@/lib/useTranslations";
+import { getTranslations } from "@/lib/useTranslations";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const locale = await getServerLocale();
-  const t = useTranslations(locale);
+  const t = getTranslations(locale);
   
   return (
     <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">

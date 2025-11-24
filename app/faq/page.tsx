@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { motion } from "framer-motion";
 import { getServerLocale } from "@/lib/getServerLocale";
-import { useTranslations } from "@/lib/useTranslations";
+import { getTranslations } from "@/lib/useTranslations";
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +51,7 @@ const faqCategories = [
 
 export default async function FAQPage() {
   const locale = await getServerLocale();
-  const t = useTranslations(locale);
+  const t = getTranslations(locale);
   return (
     <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-4xl">
@@ -78,11 +78,11 @@ export default async function FAQPage() {
               transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
             >
               <h2 className="text-2xl font-bold mb-6 text-slate-900 border-b border-slate-200 pb-2">
-                {t.faq.categories[category.key]}
+                {t.faq.categories[category.key as keyof typeof t.faq.categories]}
               </h2>
               <div className="space-y-6">
                 {category.questionKeys.map((questionKey, index) => {
-                  const qa = t.faq.questions[questionKey];
+                  const qa = t.faq.questions[questionKey as keyof typeof t.faq.questions];
                   return (
                     <motion.div
                       key={questionKey}

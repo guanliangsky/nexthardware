@@ -121,7 +121,7 @@ export default function MemberSpotlights() {
                     {t.memberSpotlights.project}
                   </p>
                   <p className="text-sm text-slate-700">
-                    {t.memberSpotlights.members[member.key].project}
+                    {t.memberSpotlights.members[member.key as keyof typeof t.memberSpotlights.members].project}
                   </p>
                 </div>
                 <div>
@@ -129,7 +129,7 @@ export default function MemberSpotlights() {
                     {t.memberSpotlights.contribution}
                   </p>
                   <p className="text-sm text-slate-700">
-                    {t.memberSpotlights.members[member.key].contribution}
+                    {t.memberSpotlights.members[member.key as keyof typeof t.memberSpotlights.members].contribution}
                   </p>
                 </div>
                 <div className="pt-2 border-t border-slate-200">

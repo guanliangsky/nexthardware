@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { motion } from "framer-motion";
 import { getServerLocale } from "@/lib/getServerLocale";
-import { useTranslations } from "@/lib/useTranslations";
+import { getTranslations } from "@/lib/useTranslations";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 export default async function ResourcesPage() {
   const locale = await getServerLocale();
-  const t = useTranslations(locale);
+  const t = getTranslations(locale);
   
   const resources = [
     {
@@ -138,11 +138,14 @@ export default async function ResourcesPage() {
               transition={{ duration: 0.6, delay: sectionIndex * 0.1 }}
             >
               <h2 className="text-2xl font-bold mb-6 text-slate-900 border-b border-slate-200 pb-2">
-                {t.resources.categories[section.category]}
+                {t.resources.categories[section.category as keyof typeof t.resources.categories]}
               </h2>
               <div className="grid md:grid-cols-2 gap-4">
                 {section.items.map((item, itemIndex) => {
-                  const resourceData = t.resources[section.category][item.key];
+                  const categoryKey = section.category as keyof typeof t.resources;
+                  const categoryData = t.resources[categoryKey];
+                  if (typeof categoryData === 'string' || !categoryData || typeof categoryData !== 'object') return null;
+                  const resourceData = (categoryData as any)[item.key];
                   return (
                     <motion.a
                       key={item.key}

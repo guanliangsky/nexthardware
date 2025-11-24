@@ -3,7 +3,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { getAllBlogPosts } from "@/lib/blog-posts";
 import { getServerLocale } from "@/lib/getServerLocale";
-import { useTranslations } from "@/lib/useTranslations";
+import { getTranslations } from "@/lib/useTranslations";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   const locale = await getServerLocale();
-  const t = useTranslations(locale);
+  const t = getTranslations(locale);
   const blogPosts = getAllBlogPosts();
 
   return (

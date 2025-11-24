@@ -64,7 +64,7 @@ export default function FeaturedProjects() {
                 <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={t.featuredProjects.projects[project.key as keyof typeof t.featuredProjects.projects].title}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -79,14 +79,14 @@ export default function FeaturedProjects() {
                   </span>
                   <span className="text-slate-300">•</span>
                   <span className="text-sm text-slate-600">
-                    {t.featuredProjects.projects[project.key].member}
+                    {t.featuredProjects.projects[project.key as keyof typeof t.featuredProjects.projects].member}
                   </span>
                 </div>
                 <h3 className="text-2xl font-semibold mb-3 text-slate-900">
-                  {t.featuredProjects.projects[project.key].title}
+                  {t.featuredProjects.projects[project.key as keyof typeof t.featuredProjects.projects].title}
                 </h3>
                 <p className="text-slate-600 leading-relaxed mb-4">
-                  {t.featuredProjects.projects[project.key].description}
+                  {t.featuredProjects.projects[project.key as keyof typeof t.featuredProjects.projects].description}
                 </p>
                 
                 <div className="mb-4">
@@ -110,7 +110,7 @@ export default function FeaturedProjects() {
                     {t.featuredProjects.outcome}
                   </p>
                   <p className="text-sm text-slate-600">
-                    {t.featuredProjects.projects[project.key].outcome}
+                    {t.featuredProjects.projects[project.key as keyof typeof t.featuredProjects.projects].outcome}
                   </p>
                 </div>
               </div>

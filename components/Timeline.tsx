@@ -124,17 +124,17 @@ export default function Timeline() {
                               {event.quarter}
                             </span>
                             <h4 className="text-lg font-semibold text-slate-900 mt-1">
-                              {t.timeline.events[event.key].title}
+                              {t.timeline.events[event.key as keyof typeof t.timeline.events].title}
                             </h4>
                           </div>
                           <div className="mt-2 sm:mt-0">
                             <span className="inline-block px-3 py-1 bg-slate-900 text-white text-xs font-semibold rounded-full">
-                              {t.timeline.events[event.key].milestone}
+                              {t.timeline.events[event.key as keyof typeof t.timeline.events].milestone}
                             </span>
                           </div>
                         </div>
                         <p className="text-sm text-slate-600 leading-relaxed">
-                          {t.timeline.events[event.key].description}
+                          {t.timeline.events[event.key as keyof typeof t.timeline.events].description}
                         </p>
                       </div>
                     </motion.div>

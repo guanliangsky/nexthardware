@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { getServerLocale } from "@/lib/getServerLocale";
-import { useTranslations } from "@/lib/useTranslations";
+import { getTranslations } from "@/lib/useTranslations";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +32,7 @@ const resourceKeys = ["communityGuidelines", "faq", "resources", "blog"];
 
 export default async function GettingStartedPage() {
   const locale = await getServerLocale();
-  const t = useTranslations(locale);
+  const t = getTranslations(locale);
   return (
     <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-4xl">
@@ -91,7 +91,7 @@ export default async function GettingStartedPage() {
         {/* Steps */}
         <div className="space-y-12 mb-16">
           {stepKeys.map((stepKey, index) => {
-            const step = t.gettingStarted.steps[stepKey];
+            const step = t.gettingStarted.steps[stepKey as keyof typeof t.gettingStarted.steps];
             return (
               <motion.section
                 key={stepKey}
@@ -161,7 +161,10 @@ export default async function GettingStartedPage() {
           <h2 className="text-2xl font-bold mb-6 text-slate-900">{t.gettingStarted.helpfulResources.title}</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {resourceKeys.map((key) => {
-              const resource = t.gettingStarted.helpfulResources[key];
+              const resourceKey = key as keyof typeof t.gettingStarted.helpfulResources;
+              const resource = t.gettingStarted.helpfulResources[resourceKey];
+              // Skip if it's the title property (string)
+              if (typeof resource === 'string') return null;
               const hrefMap: Record<string, string> = {
                 communityGuidelines: "/resources",
                 faq: "/faq",
