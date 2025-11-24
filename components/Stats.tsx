@@ -2,13 +2,8 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-
-const stats = [
-  { label: "Community Members", value: 1200, suffix: "+", icon: "👥" },
-  { label: "Events Hosted", value: 85, suffix: "+", icon: "📅" },
-  { label: "Projects Shared", value: 450, suffix: "+", icon: "🚀" },
-  { label: "Companies Represented", value: 180, suffix: "+", icon: "🏢" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 function AnimatedCounter({ value, suffix, delay }: { value: number; suffix: string; delay: number }) {
   const [count, setCount] = useState(0);
@@ -42,6 +37,16 @@ function AnimatedCounter({ value, suffix, delay }: { value: number; suffix: stri
 }
 
 export default function Stats() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
+  
+  const stats = [
+    { label: t.stats.members, value: 1200, suffix: "+", icon: "👥" },
+    { label: t.stats.events, value: 85, suffix: "+", icon: "📅" },
+    { label: t.stats.projects, value: 450, suffix: "+", icon: "🚀" },
+    { label: t.stats.companies, value: 180, suffix: "+", icon: "🏢" },
+  ];
+  
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-y border-slate-200">
       <div className="container mx-auto max-w-5xl">

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-// Gmail API removed - using FoxyForm for contact form submissions
+// Email notifications handled by Formspree (configured in ContactForm component)
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -38,16 +38,17 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 }
 
-// Email notifications are now handled by FoxyForm
+// Email notifications are handled by Formspree (via ContactForm component)
 // This function is kept for backward compatibility but does nothing
+// Formspree sends email notifications directly from the client-side form
 async function sendEmailNotification(formData: {
   name: string;
   email: string;
   subject: string;
   message: string;
 }): Promise<boolean> {
-  console.log("📧 Contact form submission (handled by FoxyForm):", formData);
-  // FoxyForm handles email delivery directly
+  console.log("📧 Contact form submission (email handled by Formspree):", formData);
+  // Formspree handles email delivery directly from ContactForm component
   return true;
 }
 
@@ -141,7 +142,7 @@ export async function POST(request: NextRequest) {
 
     // Last resort: Log to console
     console.log("Contact form submission (not saved):", formData);
-    console.log("⚠️  Set up Supabase to save messages. Email delivery handled by FoxyForm.");
+    console.log("⚠️  Set up Supabase to save messages. Email delivery handled by Formspree.");
 
     return NextResponse.json(
       { message: "Your message has been received. We'll get back to you soon!" },

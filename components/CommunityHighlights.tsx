@@ -1,27 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const highlights = [
-  {
-    title: "Silicon Valley Hub",
-    description: "Based in the heart of tech innovation, connecting hardware builders worldwide",
-  },
-  {
-    title: "Active Community",
-    description: "Regular meetups, workshops, and events for hardware engineers and founders",
-  },
-  {
-    title: "Project Sharing",
-    description: "Showcase your work, get feedback, and collaborate with fellow builders",
-  },
-  {
-    title: "Global Network",
-    description: "Connect with engineers from Google, NVIDIA, Rokid, Stanford, and more",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function CommunityHighlights() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
+  
+  const highlights = [
+    {
+      title: t.communityHighlights.siliconValley.title,
+      description: t.communityHighlights.siliconValley.description,
+    },
+    {
+      title: t.communityHighlights.activeCommunity.title,
+      description: t.communityHighlights.activeCommunity.description,
+    },
+    {
+      title: t.communityHighlights.projectSharing.title,
+      description: t.communityHighlights.projectSharing.description,
+    },
+    {
+      title: t.communityHighlights.globalNetwork.title,
+      description: t.communityHighlights.globalNetwork.description,
+    },
+  ];
+  
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="container mx-auto max-w-6xl">
@@ -32,7 +37,7 @@ export default function CommunityHighlights() {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          Why Join Next Hardware?
+          {t.communityHighlights.title}
         </motion.h2>
         
         <motion.p
@@ -42,7 +47,7 @@ export default function CommunityHighlights() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          A community built by hardware engineers, for hardware engineers
+          {t.communityHighlights.subtitle}
         </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">

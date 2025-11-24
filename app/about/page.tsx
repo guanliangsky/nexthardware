@@ -1,15 +1,35 @@
 /* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from "next";
 import { motion } from "framer-motion";
+import { getServerLocale } from "@/lib/getServerLocale";
+import { useTranslations } from "@/lib/useTranslations";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About | Next Hardware",
   description: "Learn about Next Hardware - the global community for builders of the physical future. Established 2023. Join 1,200+ hardware engineers, founders, and makers.",
+  keywords: ["hardware community", "hardware engineering", "AI hardware", "robotics community", "embedded systems", "Silicon Valley"],
+  alternates: {
+    canonical: "https://nexthardware.io/about",
+  },
+  openGraph: {
+    title: "About | Next Hardware",
+    description: "Learn about Next Hardware - the global community for builders of the physical future. Established 2023. Join 1,200+ hardware engineers, founders, and makers.",
+    url: "https://nexthardware.io/about",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "About | Next Hardware",
+    description: "Learn about Next Hardware - the global community for builders of the physical future.",
+  },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const locale = await getServerLocale();
+  const t = useTranslations(locale);
+  
   return (
     <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-4xl">
@@ -19,71 +39,70 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900">
-            About Next Hardware
+            {t.about.title}
           </h1>
           <p className="text-lg text-slate-600 mb-8">
-            The global community for builders of the physical future
+            {t.about.subtitle}
           </p>
         </motion.div>
 
         <div className="border border-slate-200 rounded-lg p-8 lg:p-12 space-y-8 text-slate-600 bg-white">
           {/* Origin Story */}
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-slate-900">Our Story</h2>
+            <h2 className="text-2xl font-bold mb-4 text-slate-900">{t.about.ourStory.title}</h2>
             <p className="mb-4 leading-relaxed">
-              Next Hardware was founded in 2023 with a simple mission: to bring together the builders, engineers, founders, and makers who are creating the physical future. We recognized that the intersection of AI, AR, robotics, and embedded systems was creating unprecedented opportunities—and challenges.
+              {t.about.ourStory.p1}
             </p>
             <p className="mb-4 leading-relaxed">
-              What started as a small meetup in Silicon Valley has grown into a global community of over 1,200 members from leading companies like Google, NVIDIA, Apple, Meta, Microsoft, Tesla, and top universities including Stanford, MIT, and Berkeley.
+              {t.about.ourStory.p2}
             </p>
             <p className="mb-4 leading-relaxed">
-              We believe that the future of technology isn't just in software—it's where AI meets atoms. It's in the robots that work alongside us, the AR devices that augment our reality, and the embedded systems that power everything from smart cities to autonomous vehicles.
+              {t.about.ourStory.p3}
             </p>
           </section>
 
           {/* Mission */}
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-slate-900">Our Mission</h2>
+            <h2 className="text-2xl font-bold mb-4 text-slate-900">{t.about.ourMission.title}</h2>
             <p className="mb-4 leading-relaxed">
-              To accelerate innovation at the intersection of hardware, AI, and robotics by connecting builders, sharing knowledge, and fostering collaboration.
+              {t.about.ourMission.p1}
             </p>
             <p className="mb-4 leading-relaxed">
-              We're building a community where:
+              {t.about.ourMission.p2}
             </p>
             <ul className="list-disc list-inside mb-4 space-y-2 ml-4">
-              <li>Hardware engineers can share projects, learn from peers, and find collaborators</li>
-              <li>Founders can connect with technical talent and get feedback on their ideas</li>
-              <li>Researchers can bridge the gap between academia and industry</li>
-              <li>Makers can showcase their innovations and inspire others</li>
+              {t.about.ourMission.list.map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </section>
 
           {/* Values */}
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-slate-900">Our Values</h2>
+            <h2 className="text-2xl font-bold mb-4 text-slate-900">{t.about.ourValues.title}</h2>
             <div className="grid md:grid-cols-2 gap-6 mb-4">
               <div className="border border-slate-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Building in Public</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.ourValues.buildingInPublic.title}</h3>
                 <p className="text-sm leading-relaxed">
-                  We believe in transparency, sharing our learnings, and documenting our journey. Success and failure both teach valuable lessons.
+                  {t.about.ourValues.buildingInPublic.description}
                 </p>
               </div>
               <div className="border border-slate-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Technical Excellence</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.ourValues.technicalExcellence.title}</h3>
                 <p className="text-sm leading-relaxed">
-                  We value deep technical knowledge, attention to detail, and a commitment to building things that work reliably in the real world.
+                  {t.about.ourValues.technicalExcellence.description}
                 </p>
               </div>
               <div className="border border-slate-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Inclusive Community</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.ourValues.inclusiveCommunity.title}</h3>
                 <p className="text-sm leading-relaxed">
-                  We welcome builders from all backgrounds, experience levels, and perspectives. Diversity makes us stronger.
+                  {t.about.ourValues.inclusiveCommunity.description}
                 </p>
               </div>
               <div className="border border-slate-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Practical Impact</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.ourValues.practicalImpact.title}</h3>
                 <p className="text-sm leading-relaxed">
-                  We focus on real-world applications and solving actual problems. Theory is important, but shipping matters.
+                  {t.about.ourValues.practicalImpact.description}
                 </p>
               </div>
             </div>
@@ -91,30 +110,30 @@ export default function AboutPage() {
 
           {/* What We Do */}
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-slate-900">What We Do</h2>
+            <h2 className="text-2xl font-bold mb-4 text-slate-900">{t.about.whatWeDo.title}</h2>
             <div className="space-y-4 mb-4">
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Community Events</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.whatWeDo.communityEvents.title}</h3>
                 <p className="leading-relaxed">
-                  We host regular meetups, workshops, and hackathons where members can learn, network, and collaborate. Our flagship event, the Next Hardware Hack, brings together hundreds of builders for an intensive weekend of innovation.
+                  {t.about.whatWeDo.communityEvents.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Project Showcases</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.whatWeDo.projectShowcases.title}</h3>
                 <p className="leading-relaxed">
-                  Members share their latest hardware projects, from prototype PCBs to full robotics systems. These showcases inspire others and create opportunities for collaboration.
+                  {t.about.whatWeDo.projectShowcases.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Knowledge Sharing</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.whatWeDo.knowledgeSharing.title}</h3>
                 <p className="leading-relaxed">
-                  Through talks, workshops, and online discussions, we share knowledge about embedded systems, AI hardware, robotics, AR/VR, and more. Learning never stops.
+                  {t.about.whatWeDo.knowledgeSharing.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Networking</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.about.whatWeDo.networking.title}</h3>
                 <p className="leading-relaxed">
-                  We connect hardware engineers with founders, researchers with industry practitioners, and makers with resources. Great things happen when the right people meet.
+                  {t.about.whatWeDo.networking.description}
                 </p>
               </div>
             </div>
@@ -122,22 +141,22 @@ export default function AboutPage() {
 
           {/* Milestones */}
           <section>
-            <h2 className="text-2xl font-bold mb-4 text-slate-900">Milestones</h2>
+            <h2 className="text-2xl font-bold mb-4 text-slate-900">{t.about.milestones.title}</h2>
             <div className="space-y-4 mb-4">
               <div className="border-l-4 border-slate-900 pl-4">
-                <div className="text-sm font-semibold text-slate-500 mb-1">2023</div>
-                <div className="font-semibold text-slate-900 mb-1">Community Founded</div>
-                <p className="text-sm leading-relaxed">Next Hardware launched with our first meetup in Silicon Valley</p>
+                <div className="text-sm font-semibold text-slate-500 mb-1">{t.about.milestones.m2023.year}</div>
+                <div className="font-semibold text-slate-900 mb-1">{t.about.milestones.m2023.title}</div>
+                <p className="text-sm leading-relaxed">{t.about.milestones.m2023.description}</p>
               </div>
               <div className="border-l-4 border-slate-900 pl-4">
-                <div className="text-sm font-semibold text-slate-500 mb-1">2024</div>
-                <div className="font-semibold text-slate-900 mb-1">Rapid Growth</div>
-                <p className="text-sm leading-relaxed">Reached 1,000+ members, hosted 50+ events, and launched our first hackathon</p>
+                <div className="text-sm font-semibold text-slate-500 mb-1">{t.about.milestones.m2024.year}</div>
+                <div className="font-semibold text-slate-900 mb-1">{t.about.milestones.m2024.title}</div>
+                <p className="text-sm leading-relaxed">{t.about.milestones.m2024.description}</p>
               </div>
               <div className="border-l-4 border-slate-900 pl-4">
-                <div className="text-sm font-semibold text-slate-500 mb-1">2025</div>
-                <div className="font-semibold text-slate-900 mb-1">Global Expansion</div>
-                <p className="text-sm leading-relaxed">1,200+ members, 85+ events, 450+ projects shared, representing 180+ companies</p>
+                <div className="text-sm font-semibold text-slate-500 mb-1">{t.about.milestones.m2025.year}</div>
+                <div className="font-semibold text-slate-900 mb-1">{t.about.milestones.m2025.title}</div>
+                <p className="text-sm leading-relaxed">{t.about.milestones.m2025.description}</p>
               </div>
             </div>
           </section>
@@ -145,9 +164,9 @@ export default function AboutPage() {
           {/* Join CTA */}
           <section className="mt-12 pt-8 border-t border-slate-200">
             <div className="bg-slate-50 rounded-lg p-8 text-center border border-slate-200">
-              <h2 className="text-2xl font-bold mb-4 text-slate-900">Join Us</h2>
+              <h2 className="text-2xl font-bold mb-4 text-slate-900">{t.about.joinCta.title}</h2>
               <p className="mb-6 text-slate-600">
-                Whether you're building your first PCB or shipping hardware at scale, there's a place for you in our community.
+                {t.about.joinCta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
@@ -156,7 +175,7 @@ export default function AboutPage() {
                   rel="noopener noreferrer"
                   className="px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm"
                 >
-                  Join on Luma
+                  {t.about.joinCta.joinLuma}
                 </a>
                 <a
                   href="https://discord.gg/d5dTjjVD"
@@ -164,7 +183,7 @@ export default function AboutPage() {
                   rel="noopener noreferrer"
                   className="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-medium rounded-md hover:border-slate-400 hover:text-slate-900 transition-colors text-sm"
                 >
-                  Join Discord
+                  {t.about.joinCta.joinDiscord}
                 </a>
               </div>
             </div>

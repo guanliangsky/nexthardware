@@ -51,6 +51,15 @@ export default function Navbar() {
             <a href="/resources" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
               {t.nav.resources}
             </a>
+            <a href="/getting-started" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              {t.nav.gettingStarted}
+            </a>
+            <a href="/faq" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              {t.nav.faq}
+            </a>
+            <a href="#volunteering" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              {t.nav.volunteering}
+            </a>
             <a href="#events" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
               {t.nav.events}
             </a>
@@ -70,7 +79,8 @@ export default function Navbar() {
             <button
               className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label={t.accessibility.toggleMenu}
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,62 +107,86 @@ export default function Navbar() {
             className="fixed top-20 md:top-24 left-0 right-0 z-40 bg-white border-b border-slate-200 shadow-lg md:hidden"
           >
             <div className="container mx-auto px-4 py-4">
-              <nav className="flex flex-col gap-4">
+              <nav className="flex flex-col gap-4" aria-label={t.accessibility.mobileNavigation}>
                 <a
                   href="/about"
                   onClick={handleLinkClick}
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
                 >
-                  About
+                  {t.nav.about}
                 </a>
                 <a
                   href="/blog"
                   onClick={handleLinkClick}
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
                 >
-                  Blog
+                  {t.nav.blog}
                 </a>
-                <a
-                  href="/resources"
-                  onClick={handleLinkClick}
-                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
-                >
-                  Resources
-                </a>
-                <a
-                  href="#events"
-                  onClick={handleLinkClick}
-                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
-                >
-                  Events
-                </a>
+                     <a
+                       href="/resources"
+                       onClick={handleLinkClick}
+                       className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                     >
+                       {t.nav.resources}
+                     </a>
+                     <a
+                       href="/getting-started"
+                       onClick={handleLinkClick}
+                       className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                     >
+                       {t.nav.gettingStarted}
+                     </a>
+                     <a
+                       href="/faq"
+                       onClick={handleLinkClick}
+                       className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                     >
+                       {t.nav.faq}
+                     </a>
+                    <a
+                      href="#volunteering"
+                      onClick={handleLinkClick}
+                      className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                    >
+                      {t.nav.volunteering}
+                    </a>
+                     <a
+                       href="#events"
+                       onClick={handleLinkClick}
+                       className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                     >
+                       {t.nav.events}
+                     </a>
                 <a
                   href="#showcase"
                   onClick={handleLinkClick}
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
                 >
-                  Community
+                  {t.nav.community}
                 </a>
                 <a
                   href="#contact"
                   onClick={handleLinkClick}
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
                 >
-                  Contact
+                  {t.nav.contact}
                 </a>
                 <a
                   href="#join"
                   onClick={handleLinkClick}
                   className="px-4 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors text-sm font-medium text-center"
                 >
-                  Join
+                  {t.nav.join}
                 </a>
+                <div className="pt-4 border-t border-slate-200 mt-2">
+                  <LanguageSwitcher />
+                </div>
               </nav>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
-  );
-}
+        </>
+      );
+    }
 

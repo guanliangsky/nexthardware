@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Logo from "./Logo";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 const socialLinks = [
   { name: "Twitter/X", url: "https://x.com/nexthardware", label: "X" },
@@ -12,6 +14,9 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
+  
   return (
     <footer className="border-t border-slate-200 py-12 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="container mx-auto">
@@ -24,10 +29,10 @@ export default function Footer() {
           >
             <Logo size="sm" showText={false} />
             <p className="text-xs text-slate-600">
-              © 2025 Next Hardware. Established 2023.
+              {t.footer.copyright}
             </p>
             <p className="text-xs text-slate-500 mt-1">
-              Building the future of hardware, AI, and robotics.
+              {t.footer.tagline}
             </p>
           </motion.div>
 
@@ -62,31 +67,39 @@ export default function Footer() {
             >
               <div className="flex flex-wrap gap-3 text-xs justify-center">
                 <a href="/about" className="text-slate-600 hover:text-slate-900 transition-colors">
-                  About
+                  {t.nav.about}
                 </a>
                 <span className="text-slate-400">•</span>
                 <a href="/blog" className="text-slate-600 hover:text-slate-900 transition-colors">
-                  Blog
+                  {t.nav.blog}
                 </a>
                 <span className="text-slate-400">•</span>
                 <a href="/resources" className="text-slate-600 hover:text-slate-900 transition-colors">
-                  Resources
+                  {t.nav.resources}
+                </a>
+                <span className="text-slate-400">•</span>
+                <a href="/getting-started" className="text-slate-600 hover:text-slate-900 transition-colors">
+                  {t.nav.gettingStarted}
+                </a>
+                <span className="text-slate-400">•</span>
+                <a href="/faq" className="text-slate-600 hover:text-slate-900 transition-colors">
+                  {t.nav.faq}
                 </a>
                 <span className="text-slate-400">•</span>
                 <a href="#contact" className="text-slate-600 hover:text-slate-900 transition-colors">
-                  Contact
+                  {t.nav.contact}
                 </a>
                 <span className="text-slate-400">•</span>
                 <a href="/privacy" className="text-slate-600 hover:text-slate-900 transition-colors">
-                  Privacy
+                  {t.common.privacy}
                 </a>
                 <span className="text-slate-400">•</span>
                 <a href="/terms" className="text-slate-600 hover:text-slate-900 transition-colors">
-                  Terms
+                  {t.common.terms}
                 </a>
                 <span className="text-slate-400">•</span>
                 <a href="/cookies" className="text-slate-600 hover:text-slate-900 transition-colors">
-                  Cookies
+                  {t.common.cookies}
                 </a>
               </div>
               <div className="flex flex-col items-center gap-1">
@@ -94,10 +107,10 @@ export default function Footer() {
                   href="/privacy#ccpa"
                   className="text-xs text-slate-500 hover:text-slate-700 transition-colors underline"
                 >
-                  Do Not Sell My Personal Information
+                  {t.footer.doNotSell}
                 </a>
                 <p className="text-xs text-slate-500 text-center md:text-left">
-                  We do not sell personal information
+                  {t.footer.noSell}
                 </p>
               </div>
             </motion.div>

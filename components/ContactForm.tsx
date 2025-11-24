@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function ContactForm() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -73,7 +77,7 @@ export default function ContactForm() {
       }, 3000);
     } catch (err) {
       setStatus("error");
-      setErrorMessage("Failed to send message. Please try again.");
+      setErrorMessage(t.contactForm.error);
     }
   };
 
@@ -81,13 +85,14 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <label htmlFor="contact-name" className="block text-sm font-medium text-slate-700 mb-2">
-          Name
+          {t.contactForm.name}
         </label>
         <input
           type="text"
           id="contact-name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          aria-required="true"
           className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900"
           required
         />
@@ -95,13 +100,15 @@ export default function ContactForm() {
 
       <div>
         <label htmlFor="contact-email" className="block text-sm font-medium text-slate-700 mb-2">
-          Email
+          {t.contactForm.email}
         </label>
         <input
           type="email"
           id="contact-email"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          aria-required="true"
+          aria-invalid={status === "error"}
           className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900"
           required
         />
@@ -109,7 +116,7 @@ export default function ContactForm() {
 
       <div>
         <label htmlFor="contact-subject" className="block text-sm font-medium text-slate-700 mb-2">
-          Subject
+          {t.contactForm.subject}
         </label>
         <input
           type="text"
@@ -117,42 +124,52 @@ export default function ContactForm() {
           value={formData.subject}
           onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
           className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900"
-          placeholder="What's this about?"
+          placeholder={t.contactForm.subjectPlaceholder}
         />
       </div>
 
       <div>
         <label htmlFor="contact-message" className="block text-sm font-medium text-slate-700 mb-2">
-          Message
+          {t.contactForm.message}
         </label>
         <textarea
           id="contact-message"
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           rows={6}
+          aria-required="true"
           className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-slate-500 text-slate-900 resize-none"
           required
         />
       </div>
 
       {status === "success" && (
-        <div className="p-4 bg-green-50 border border-green-200 rounded-md text-green-700 text-sm">
-          ✓ Your message has been sent successfully! We&apos;ll get back to you soon.
+        <div 
+          role="status"
+          aria-live="polite"
+          className="p-4 bg-green-50 border border-green-200 rounded-md text-green-700 text-sm"
+        >
+          {t.contactForm.success}
         </div>
       )}
 
       {status === "error" && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">
-          {errorMessage || "Something went wrong. Please try again."}
+        <div 
+          role="alert"
+          aria-live="assertive"
+          className="p-4 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm"
+        >
+          {errorMessage || t.contactForm.errorGeneric}
         </div>
       )}
 
       <button
         type="submit"
         disabled={status === "sending"}
+        aria-label={status === "sending" ? t.accessibility.sendingMessage : t.accessibility.sendMessage}
         className="w-full px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {status === "sending" ? "Sending..." : "Send Message"}
+        {status === "sending" ? t.contactForm.sending : t.contactForm.send}
       </button>
     </form>
   );

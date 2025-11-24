@@ -2,8 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function Newsletter() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -27,7 +31,7 @@ export default function Newsletter() {
       }
       
       setStatus("success");
-      setMessage("Thank you! You've been subscribed to our newsletter.");
+      setMessage(t.newsletter.success);
       setEmail("");
       
       // Reset after 5 seconds
@@ -52,7 +56,7 @@ export default function Newsletter() {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          Join Our Email Community
+          {t.newsletter.title}
         </motion.h2>
         <motion.p
           className="text-sm text-slate-600 mb-6 max-w-xl mx-auto"
@@ -61,7 +65,7 @@ export default function Newsletter() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          Get notified about upcoming events, community updates, and hardware innovations. Join our email group to connect with the community.
+          {t.newsletter.description}
         </motion.p>
 
         <motion.form
@@ -76,17 +80,21 @@ export default function Newsletter() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder={t.newsletter.placeholder}
             required
+            aria-label={t.accessibility.emailAddress}
+            aria-required="true"
+            aria-invalid={status === "error"}
             className="flex-1 px-4 py-2.5 bg-white border border-slate-300 rounded-md text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-500 transition-colors text-sm"
             disabled={status === "loading"}
           />
           <button
             type="submit"
             disabled={status === "loading" || !email}
+            aria-label={status === "loading" ? t.accessibility.subscribingToNewsletter : t.accessibility.subscribeToNewsletter}
             className="px-6 py-2.5 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium whitespace-nowrap"
           >
-            {status === "loading" ? "Subscribing..." : "Subscribe"}
+            {status === "loading" ? t.newsletter.subscribing : t.newsletter.subscribe}
           </button>
         </motion.form>
 
@@ -94,6 +102,8 @@ export default function Newsletter() {
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
+            role="status"
+            aria-live="polite"
             className={`mt-4 text-sm ${
               status === "success" ? "text-green-600" : "text-red-400"
             }`}
@@ -109,7 +119,7 @@ export default function Newsletter() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          We respect your privacy. Unsubscribe at any time.
+          {t.newsletter.privacy}
         </motion.p>
       </div>
     </section>

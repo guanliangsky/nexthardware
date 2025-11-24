@@ -1,38 +1,43 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const pillars = [
-  {
-    title: "Spatial Computing",
-    description: "AR/VR, Vision Pro, Glasses",
-    details: "Building immersive experiences through advanced optics, spatial tracking, and mixed reality interfaces. Exploring the future of human-computer interaction beyond screens.",
-    icon: "🥽",
-    gradient: "from-blue-500 to-cyan-500",
-    delay: 0.1,
-    tech: ["AR/VR", "Vision Pro", "Spatial Tracking", "Optics"],
-  },
-  {
-    title: "Embodied AI",
-    description: "Robotics, Sensors, Physical Intelligence",
-    details: "Creating intelligent systems that interact with the physical world. From autonomous robots to sensor fusion and real-time decision making at the edge.",
-    icon: "🤖",
-    gradient: "from-purple-500 to-pink-500",
-    delay: 0.2,
-    tech: ["Robotics", "Sensor Fusion", "Edge AI", "Autonomous Systems"],
-  },
-  {
-    title: "Edge Hardware",
-    description: "IoT, custom silicon, manufacturing",
-    details: "Designing efficient, powerful hardware for edge computing. Custom ASICs, embedded systems, and scalable manufacturing for the next generation of devices.",
-    icon: "⚡",
-    gradient: "from-cyan-500 to-blue-500",
-    delay: 0.3,
-    tech: ["Custom Silicon", "IoT", "Embedded Systems", "Manufacturing"],
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function ThreePillars() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
+  
+  const pillars = [
+    {
+      title: t.threePillars.spatialComputing.title,
+      description: t.threePillars.spatialComputing.description,
+      details: t.threePillars.spatialComputing.details,
+      icon: "🥽",
+      gradient: "from-blue-500 to-cyan-500",
+      delay: 0.1,
+      tech: ["AR/VR", "Vision Pro", "Spatial Tracking", "Optics"],
+    },
+    {
+      title: t.threePillars.embodiedAI.title,
+      description: t.threePillars.embodiedAI.description,
+      details: t.threePillars.embodiedAI.details,
+      icon: "🤖",
+      gradient: "from-purple-500 to-pink-500",
+      delay: 0.2,
+      tech: ["Robotics", "Sensor Fusion", "Edge AI", "Autonomous Systems"],
+    },
+    {
+      title: t.threePillars.edgeHardware.title,
+      description: t.threePillars.edgeHardware.description,
+      details: t.threePillars.edgeHardware.details,
+      icon: "⚡",
+      gradient: "from-cyan-500 to-blue-500",
+      delay: 0.3,
+      tech: ["Custom Silicon", "IoT", "Embedded Systems", "Manufacturing"],
+    },
+  ];
+  
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="container mx-auto max-w-6xl">
@@ -43,7 +48,7 @@ export default function ThreePillars() {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          Focus Areas
+          {t.threePillars.title}
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-20">

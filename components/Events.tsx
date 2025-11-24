@@ -2,8 +2,13 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function Events() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
+  
   // Sample schedule data - replace with your actual events
   const schedule = [
     { day: "Friday, March 15", time: "18:00", topic: "Welcome Reception", location: "Main Hall" },
@@ -41,13 +46,13 @@ export default function Events() {
           transition={{ duration: 0.6 }}
         >
           <div className="inline-block px-4 py-2 bg-slate-100 rounded-full mb-6">
-            <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider">HACKATHON</span>
+            <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider">{t.events.hackathonBadge}</span>
           </div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-slate-900">
-            Next Hardware Hack 2025
+            {t.events.hackathonTitle}
           </h2>
           <p className="text-lg sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-            Join us for an electrifying weekend building the future of hardware, AI, and robotics
+            {t.events.hackathonDescription}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <div className="flex items-center gap-2 text-slate-700">
@@ -72,7 +77,7 @@ export default function Events() {
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm"
             >
-              Register Now
+              {t.events.registerNow}
             </a>
           </div>
         </motion.div>
@@ -85,12 +90,12 @@ export default function Events() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">Prizes</h3>
+          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">{t.events.prizes}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { place: "1st Prize", amount: "$5,000", icon: "🥇" },
-              { place: "2nd Prize", amount: "$3,000", icon: "🥈" },
-              { place: "3rd Prize", amount: "$1,500", icon: "🥉" },
+              { place: t.events.firstPrize, amount: "$5,000", icon: "🥇" },
+              { place: t.events.secondPrize, amount: "$3,000", icon: "🥈" },
+              { place: t.events.thirdPrize, amount: "$1,500", icon: "🥉" },
             ].map((prize, index) => (
               <motion.div
                 key={prize.place}
@@ -116,16 +121,16 @@ export default function Events() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">Schedule</h3>
+          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">{t.events.schedule}</h3>
           <div className="border border-slate-200 rounded-lg overflow-hidden bg-white">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-slate-50 border-b border-slate-200">
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Day</th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Time</th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Topic</th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Location</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">{t.events.scheduleDay}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">{t.events.scheduleTime}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">{t.events.scheduleTopic}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">{t.events.scheduleLocation}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
@@ -158,7 +163,7 @@ export default function Events() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">Judges</h3>
+          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">{t.events.judges}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {judges.map((judge, index) => (
               <motion.div
@@ -192,7 +197,7 @@ export default function Events() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">Mentors</h3>
+          <h3 className="text-2xl font-semibold mb-8 text-center text-slate-900">{t.events.mentors}</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {mentors.map((mentor, index) => (
               <motion.div
@@ -226,9 +231,9 @@ export default function Events() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-semibold mb-4 text-center text-slate-900">All Events</h3>
+          <h3 className="text-2xl font-semibold mb-4 text-center text-slate-900">{t.events.allEvents}</h3>
           <p className="text-slate-600 mb-6 text-center text-sm">
-            Browse and register for all our community events
+            {t.events.allEventsDescription}
           </p>
           <div className="w-full rounded-lg overflow-hidden border border-slate-200">
             <iframe
@@ -238,7 +243,7 @@ export default function Events() {
               frameBorder="0"
               style={{ border: 0 }}
               allowFullScreen
-              aria-label="Next Hardware Events Calendar"
+              aria-label={t.accessibility.nextHardwareEventsCalendar}
               className="w-full"
             />
           </div>
@@ -249,7 +254,7 @@ export default function Events() {
               rel="noopener noreferrer"
               className="px-6 py-2.5 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm text-center"
             >
-              View All Events on Luma
+              {t.events.viewAllEvents}
             </a>
             <a
               href="https://luma.com/NextHardware"
@@ -257,7 +262,7 @@ export default function Events() {
               rel="noopener noreferrer"
               className="px-6 py-2.5 bg-white border border-slate-300 text-slate-700 font-medium rounded-md hover:border-slate-400 hover:text-slate-900 transition-colors text-sm text-center"
             >
-              Subscribe to Calendar
+              {t.events.subscribeCalendar}
             </a>
           </div>
         </motion.div>

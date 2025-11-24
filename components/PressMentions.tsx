@@ -2,44 +2,39 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-// AI-Generated realistic press mentions and media coverage
-const pressMentions = [
-  {
-    id: 1,
-    outlet: "TechCrunch",
-    title: "Next Hardware Community Reaches 1,200 Members",
-    date: "March 2024",
-    excerpt: "The Silicon Valley hardware community has grown rapidly, connecting engineers from major tech companies...",
-    link: "#",
-  },
-  {
-    id: 2,
-    outlet: "IEEE Spectrum",
-    title: "How Next Hardware is Bridging AI and Physical Computing",
-    date: "June 2024",
-    excerpt: "A deep dive into the community's approach to edge AI, robotics, and embedded systems innovation...",
-    link: "#",
-  },
-  {
-    id: 3,
-    outlet: "The Verge",
-    title: "Hardware Hackathon Showcases Next-Gen Robotics",
-    date: "October 2024",
-    excerpt: "Next Hardware Hack 2024 brought together 300+ engineers to build the future of physical computing...",
-    link: "#",
-  },
-  {
-    id: 4,
-    outlet: "Wired",
-    title: "The Community Building the Hardware for AI's Physical Future",
-    date: "January 2025",
-    excerpt: "As AI moves from software to atoms, Next Hardware provides the forum for engineers building that bridge...",
-    link: "#",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function PressMentions() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
+
+  const pressMentions = [
+    {
+      id: 1,
+      outlet: "TechCrunch",
+      key: 'techcrunch',
+      link: "#",
+    },
+    {
+      id: 2,
+      outlet: "IEEE Spectrum",
+      key: 'ieee',
+      link: "#",
+    },
+    {
+      id: 3,
+      outlet: "The Verge",
+      key: 'verge',
+      link: "#",
+    },
+    {
+      id: 4,
+      outlet: "Wired",
+      key: 'wired',
+      link: "#",
+    },
+  ];
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-y border-slate-200">
       <div className="container mx-auto max-w-6xl">
@@ -51,10 +46,10 @@ export default function PressMentions() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl sm:text-4xl font-semibold mb-4 text-slate-900">
-            In The Press
+            {t.pressMentions.title}
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Media coverage and recognition of our community's impact
+            {t.pressMentions.subtitle}
           </p>
         </motion.div>
 
@@ -74,14 +69,14 @@ export default function PressMentions() {
                   {mention.outlet}
                 </span>
                 <span className="text-xs text-slate-400">
-                  {mention.date}
+                  {t.pressMentions.mentions[mention.key].date}
                 </span>
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-slate-700 transition-colors">
-                {mention.title}
+                {t.pressMentions.mentions[mention.key].title}
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                {mention.excerpt}
+                {t.pressMentions.mentions[mention.key].excerpt}
               </p>
             </motion.a>
           ))}

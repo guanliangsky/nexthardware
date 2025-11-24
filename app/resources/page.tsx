@@ -1,107 +1,112 @@
 /* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from "next";
 import { motion } from "framer-motion";
+import { getServerLocale } from "@/lib/getServerLocale";
+import { useTranslations } from "@/lib/useTranslations";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Resources | Next Hardware",
   description: "Resources for hardware builders: getting started guides, tools, documentation, and community guidelines for Next Hardware community.",
+  keywords: ["hardware resources", "PCB design", "embedded systems", "hardware tools", "hardware documentation", "hardware community"],
+  alternates: {
+    canonical: "https://nexthardware.io/resources",
+  },
+  openGraph: {
+    title: "Resources | Next Hardware",
+    description: "Resources for hardware builders: getting started guides, tools, documentation, and community guidelines.",
+    url: "https://nexthardware.io/resources",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Resources | Next Hardware",
+    description: "Resources for hardware builders: getting started guides, tools, and documentation.",
+  },
 };
 
-export default function ResourcesPage() {
+export default async function ResourcesPage() {
+  const locale = await getServerLocale();
+  const t = useTranslations(locale);
+  
   const resources = [
     {
-      category: "Getting Started",
+      category: "gettingStarted",
       items: [
         {
-          title: "New to Hardware?",
-          description: "A beginner's guide to embedded systems, PCBs, and hardware development",
+          key: "newToHardware",
           link: "#",
         },
         {
-          title: "Community Guidelines",
-          description: "Our code of conduct and community standards for respectful collaboration",
+          key: "communityGuidelines",
           link: "#",
         },
         {
-          title: "How to Join Events",
-          description: "Step-by-step guide to registering for and participating in our events",
+          key: "howToJoinEvents",
           link: "https://luma.com/NextHardware",
         },
       ],
     },
     {
-      category: "Tools & Platforms",
+      category: "toolsPlatforms",
       items: [
         {
-          title: "PCB Design Tools",
-          description: "Recommended tools for PCB design: KiCad, Altium, Eagle, and more",
+          key: "pcbDesign",
           link: "#",
         },
         {
-          title: "Embedded Development",
-          description: "Resources for embedded systems: Arduino, ESP32, Raspberry Pi, and microcontrollers",
+          key: "embeddedDev",
           link: "#",
         },
         {
-          title: "3D Printing & Prototyping",
-          description: "Guide to 3D printing, CNC machining, and rapid prototyping services",
+          key: "threeDPrinting",
           link: "#",
         },
         {
-          title: "Simulation & Testing",
-          description: "Tools for circuit simulation, thermal analysis, and hardware testing",
+          key: "simulation",
           link: "#",
         },
       ],
     },
     {
-      category: "Learning Resources",
+      category: "learningResources",
       items: [
         {
-          title: "Hardware Engineering Basics",
-          description: "Fundamentals of electronics, circuit design, and hardware architecture",
+          key: "hardwareBasics",
           link: "#",
         },
         {
-          title: "AI Hardware",
-          description: "Resources on AI chips, neural processing units, and edge AI",
+          key: "aiHardware",
           link: "#",
         },
         {
-          title: "Robotics",
-          description: "Getting started with robotics: sensors, actuators, control systems",
+          key: "robotics",
           link: "#",
         },
         {
-          title: "AR/VR Hardware",
-          description: "Resources on AR/VR devices, displays, tracking, and spatial computing",
+          key: "arvr",
           link: "#",
         },
       ],
     },
     {
-      category: "Community",
+      category: "community",
       items: [
         {
-          title: "Discord Server",
-          description: "Join our Discord for real-time discussions, Q&A, and project sharing",
+          key: "discord",
           link: "https://discord.gg/d5dTjjVD",
         },
         {
-          title: "Event Calendar",
-          description: "View all upcoming events, workshops, and meetups",
+          key: "eventCalendar",
           link: "https://luma.com/NextHardware",
         },
         {
-          title: "Project Showcases",
-          description: "See what community members are building and get inspired",
+          key: "projectShowcases",
           link: "#showcase",
         },
         {
-          title: "Newsletter",
-          description: "Stay updated with community news, event announcements, and resources",
+          key: "newsletter",
           link: "#newsletter",
         },
       ],
@@ -117,10 +122,10 @@ export default function ResourcesPage() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900">
-            Resources
+            {t.resources.title}
           </h1>
           <p className="text-lg text-slate-600 mb-8">
-            Tools, guides, and resources for hardware builders
+            {t.resources.subtitle}
           </p>
         </motion.div>
 
@@ -133,26 +138,29 @@ export default function ResourcesPage() {
               transition={{ duration: 0.6, delay: sectionIndex * 0.1 }}
             >
               <h2 className="text-2xl font-bold mb-6 text-slate-900 border-b border-slate-200 pb-2">
-                {section.category}
+                {t.resources.categories[section.category]}
               </h2>
               <div className="grid md:grid-cols-2 gap-4">
-                {section.items.map((item, itemIndex) => (
-                  <motion.a
-                    key={item.title}
-                    href={item.link}
-                    className="block border border-slate-200 rounded-lg p-6 hover:border-slate-300 hover:shadow-sm transition-all"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: sectionIndex * 0.1 + itemIndex * 0.05 }}
-                  >
-                    <h3 className="text-lg font-semibold mb-2 text-slate-900">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </motion.a>
-                ))}
+                {section.items.map((item, itemIndex) => {
+                  const resourceData = t.resources[section.category][item.key];
+                  return (
+                    <motion.a
+                      key={item.key}
+                      href={item.link}
+                      className="block border border-slate-200 rounded-lg p-6 hover:border-slate-300 hover:shadow-sm transition-all"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: sectionIndex * 0.1 + itemIndex * 0.05 }}
+                    >
+                      <h3 className="text-lg font-semibold mb-2 text-slate-900">
+                        {resourceData.title}
+                      </h3>
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        {resourceData.description}
+                      </p>
+                    </motion.a>
+                  );
+                })}
               </div>
             </motion.section>
           ))}
@@ -164,36 +172,36 @@ export default function ResourcesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <h2 className="text-2xl font-bold mb-6 text-slate-900">Community Guidelines</h2>
+            <h2 className="text-2xl font-bold mb-6 text-slate-900">{t.resources.communityGuidelines.title}</h2>
             <div className="space-y-4 text-slate-600">
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Be Respectful</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.resources.communityGuidelines.beRespectful.title}</h3>
                 <p className="leading-relaxed">
-                  Treat all community members with respect, regardless of their background, experience level, or perspective. Constructive criticism is welcome; personal attacks are not.
+                  {t.resources.communityGuidelines.beRespectful.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Share Knowledge</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.resources.communityGuidelines.shareKnowledge.title}</h3>
                 <p className="leading-relaxed">
-                  We're here to learn from each other. Share your projects, ask questions, and help others. No question is too basic.
+                  {t.resources.communityGuidelines.shareKnowledge.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Keep It Technical</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.resources.communityGuidelines.keepItTechnical.title}</h3>
                 <p className="leading-relaxed">
-                  While we welcome discussions about the business and social aspects of hardware, our focus is on the technical: building, designing, and innovating.
+                  {t.resources.communityGuidelines.keepItTechnical.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">No Spam or Self-Promotion</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.resources.communityGuidelines.noSpam.title}</h3>
                 <p className="leading-relaxed">
-                  Share your projects and companies, but don't spam. Genuine contributions to discussions are always welcome.
+                  {t.resources.communityGuidelines.noSpam.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-slate-900">Respect Intellectual Property</h3>
+                <h3 className="text-lg font-semibold mb-2 text-slate-900">{t.resources.communityGuidelines.respectIP.title}</h3>
                 <p className="leading-relaxed">
-                  Don't share proprietary information or violate others' intellectual property. When sharing, give credit where it's due.
+                  {t.resources.communityGuidelines.respectIP.description}
                 </p>
               </div>
             </div>
@@ -207,15 +215,15 @@ export default function ResourcesPage() {
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <div className="bg-slate-50 rounded-lg p-8 text-center border border-slate-200">
-              <h2 className="text-2xl font-bold mb-4 text-slate-900">Have a Resource to Share?</h2>
+              <h2 className="text-2xl font-bold mb-4 text-slate-900">{t.resources.shareResource.title}</h2>
               <p className="mb-6 text-slate-600">
-                Know of a great tool, tutorial, or resource that should be on this page? We'd love to hear about it.
+                {t.resources.shareResource.description}
               </p>
               <a
                 href="#contact"
                 className="inline-block px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm"
               >
-                Contact Us
+                {t.resources.shareResource.contactUs}
               </a>
             </div>
           </motion.section>

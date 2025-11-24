@@ -4,33 +4,45 @@ import { useEffect } from "react";
 
 export default function Analytics() {
   useEffect(() => {
-    // Plausible Analytics (Privacy-focused)
-    // Uncomment and add your domain when ready:
-    // if (typeof window !== "undefined") {
-    //   const script = document.createElement("script");
-    //   script.defer = true;
-    //   script.dataset.domain = "nexthardware.io";
-    //   script.src = "https://plausible.io/js/script.js";
-    //   document.head.appendChild(script);
-    // }
+    if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_GA_ID) {
+      const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
-    // Google Analytics 4 (Alternative)
-    // Uncomment when ready:
-    // if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_GA_ID) {
-    //   const script1 = document.createElement("script");
-    //   script1.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`;
-    //   script1.async = true;
-    //   document.head.appendChild(script1);
-    //
-    //   const script2 = document.createElement("script");
-    //   script2.innerHTML = `
-    //     window.dataLayer = window.dataLayer || [];
-    //     function gtag(){dataLayer.push(arguments);}
-    //     gtag('js', new Date());
-    //     gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-    //   `;
-    //   document.head.appendChild(script2);
-    // }
+      // Load Google Analytics script
+      const script1 = document.createElement("script");
+      script1.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+      script1.async = true;
+      document.head.appendChild(script1);
+
+      // Initialize Google Analytics
+      const script2 = document.createElement("script");
+      script2.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${gaId}', {
+          page_path: window.location.pathname,
+        });
+      `;
+      document.head.appendChild(script2);
+
+      // Track page views on route changes (Next.js)
+      const handleRouteChange = () => {
+        if (typeof (window as any).gtag !== "undefined") {
+          (window as any).gtag("config", gaId, {
+            page_path: window.location.pathname,
+          });
+        }
+      };
+
+      // Listen for Next.js route changes
+      window.addEventListener("popstate", handleRouteChange);
+
+      return () => {
+        // Cleanup: Remove event listener
+        window.removeEventListener("popstate", handleRouteChange);
+        // Note: We don't remove scripts as they're needed for tracking
+      };
+    }
   }, []);
 
   return null;

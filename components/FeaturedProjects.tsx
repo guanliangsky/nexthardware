@@ -2,42 +2,36 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-
-// AI-Enhanced: Detailed featured projects with technical depth
-const projects = [
-  {
-    id: 1,
-    title: "Autonomous Drone AI Controller",
-    description: "Custom edge AI system for real-time drone control using TensorFlow Lite. Features ARM Cortex-M7, 6-axis IMU, GPS, and computer vision processing. Successfully deployed in 3 commercial applications.",
-    tech: ["TensorFlow Lite", "ARM Cortex-M7", "Computer Vision", "Embedded C++"],
-    outcome: "3 commercial deployments, $500K in funding raised",
-    image: "/images/projects/autonomous-drone-controller.jpg",
-    year: "2024",
-    member: "Alex Kim, RoboTech Systems",
-  },
-  {
-    id: 2,
-    title: "Spatial Computing AR Glasses",
-    description: "Next-gen AR glasses with micro-OLED displays, SLAM tracking, and custom optics. Features eye-tracking, hand gesture recognition, and spatial audio. Partnership with Rokid for production.",
-    tech: ["SLAM", "Micro-OLED", "Eye Tracking", "Spatial Audio"],
-    outcome: "Production partnership, featured at 2024 Summit",
-    image: "/images/projects/ar-glasses-spatial.jpg",
-    year: "2024",
-    member: "Community Collaboration",
-  },
-  {
-    id: 3,
-    title: "Neuromorphic Computing Chip",
-    description: "Custom ASIC for neuromorphic AI processing, inspired by biological neural networks. 10x more energy efficient than traditional AI chips. Research collaboration between MIT and industry partners.",
-    tech: ["ASIC Design", "Neuromorphic Computing", "RTL Synthesis", "AI Hardware"],
-    outcome: "Research paper published, industry partnerships formed",
-    image: "/images/projects/neuromorphic-chip.jpg",
-    year: "2024",
-    member: "Dr. Emily Rodriguez, MIT CSAIL",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function FeaturedProjects() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
+
+  const projects = [
+    {
+      id: 1,
+      key: 'drone',
+      tech: ["TensorFlow Lite", "ARM Cortex-M7", "Computer Vision", "Embedded C++", "Sensor Fusion"],
+      image: "/images/projects/autonomous-drone-controller.jpg",
+      year: "2024",
+    },
+    {
+      id: 2,
+      key: 'arGlasses',
+      tech: ["SLAM", "Micro-OLED", "Eye Tracking", "Spatial Audio", "6DOF Tracking"],
+      image: "/images/projects/ar-glasses-spatial.jpg",
+      year: "2024",
+    },
+    {
+      id: 3,
+      key: 'neuromorphic',
+      tech: ["ASIC Design", "Neuromorphic Computing", "RTL Synthesis", "AI Hardware", "Spiking Neural Networks"],
+      image: "/images/projects/neuromorphic-chip.jpg",
+      year: "2024",
+    },
+  ];
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
       <div className="container mx-auto max-w-6xl">
@@ -49,10 +43,10 @@ export default function FeaturedProjects() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl sm:text-4xl font-semibold mb-4 text-slate-900">
-            Featured Projects
+            {t.featuredProjects.title}
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Innovative hardware projects from our community
+            {t.featuredProjects.subtitle}
           </p>
         </motion.div>
 
@@ -85,19 +79,19 @@ export default function FeaturedProjects() {
                   </span>
                   <span className="text-slate-300">•</span>
                   <span className="text-sm text-slate-600">
-                    {project.member}
+                    {t.featuredProjects.projects[project.key].member}
                   </span>
                 </div>
                 <h3 className="text-2xl font-semibold mb-3 text-slate-900">
-                  {project.title}
+                  {t.featuredProjects.projects[project.key].title}
                 </h3>
                 <p className="text-slate-600 leading-relaxed mb-4">
-                  {project.description}
+                  {t.featuredProjects.projects[project.key].description}
                 </p>
                 
                 <div className="mb-4">
                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                    Technologies
+                    {t.featuredProjects.technologies}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {project.tech.map((tech) => (
@@ -113,10 +107,10 @@ export default function FeaturedProjects() {
                 
                 <div className="pt-4 border-t border-slate-200">
                   <p className="text-sm font-semibold text-slate-900 mb-1">
-                    Outcome
+                    {t.featuredProjects.outcome}
                   </p>
                   <p className="text-sm text-slate-600">
-                    {project.outcome}
+                    {t.featuredProjects.projects[project.key].outcome}
                   </p>
                 </div>
               </div>

@@ -2,8 +2,12 @@
 
 import { motion } from "framer-motion";
 import ParticleBackground from "./ParticleBackground";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function Hero() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
   // const backgroundVideo = "/videos/hero-background.mp4"; // Add your video here when ready
 
   return (
@@ -57,7 +61,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Where AI Meets Atoms
+            {t.hero.title}
           </motion.h1>
           
           <motion.p
@@ -66,7 +70,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            The global community for builders of the physical future
+            {t.hero.subtitle}
           </motion.p>
           
           <motion.div
@@ -79,13 +83,13 @@ export default function Hero() {
               href="#join"
               className="px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm"
             >
-              Join the Community
+              {t.hero.cta1}
             </a>
             <a
               href="#events"
               className="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-medium rounded-md hover:border-slate-400 hover:text-slate-900 transition-colors text-sm"
             >
-              View Events
+              {t.hero.cta2}
             </a>
           </motion.div>
           
@@ -97,7 +101,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <p className="text-xs text-slate-500 mb-6 uppercase tracking-wider text-center font-medium">
-              Community members from
+              {t.hero.socialProof}
             </p>
             <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
               <span className="text-sm font-medium text-slate-700">Google</span>

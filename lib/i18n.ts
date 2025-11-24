@@ -8,3 +8,5 @@ export const localeNames: Record<Locale, string> = {
   zh: '中文',
 };
 
+
+
