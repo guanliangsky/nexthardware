@@ -119,14 +119,36 @@ export default function RootLayout({
               dangerouslySetInnerHTML={{
                 __html: `
                   document.body.classList.add('js-loaded');
-                  // Prevent Google Translate widget injection
-                  if (window.google && window.google.translate) {
-                    delete window.google.translate;
-                  }
-                  // Remove any Google Translate iframes
-                  document.querySelectorAll('iframe[src*="translate.google"]').forEach(el => el.remove());
-                  // Remove Google Translate divs
-                  document.querySelectorAll('div[id*="google_translate"]').forEach(el => el.remove());
+                  
+                  // Aggressively prevent Google Translate widget injection
+                  (function() {
+                    // Remove Google Translate API
+                    if (window.google && window.google.translate) {
+                      delete window.google.translate;
+                    }
+                    
+                    // Remove any Google Translate iframes
+                    function removeTranslateElements() {
+                      document.querySelectorAll('iframe[src*="translate.google"]').forEach(el => el.remove());
+                      document.querySelectorAll('div[id*="google_translate"]').forEach(el => el.remove());
+                      document.querySelectorAll('div[class*="goog-te"]').forEach(el => el.remove());
+                      document.querySelectorAll('select[id*="google_translate"]').forEach(el => el.remove());
+                      document.querySelectorAll('*[id*="google_translate"]').forEach(el => el.remove());
+                    }
+                    
+                    // Run immediately
+                    removeTranslateElements();
+                    
+                    // Run on DOM changes
+                    const observer = new MutationObserver(removeTranslateElements);
+                    observer.observe(document.body, {
+                      childList: true,
+                      subtree: true
+                    });
+                    
+                    // Also run periodically as backup
+                    setInterval(removeTranslateElements, 1000);
+                  })();
                 `,
               }}
             />
