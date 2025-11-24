@@ -17,16 +17,16 @@ export default function Events() {
 
   // Sample judges/mentors - replace with your actual people
   const judges = [
-    { name: "Dr. Sarah Chen", title: "VP of Engineering, Google", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" },
-    { name: "Michael Zhang", title: "Principal Engineer, NVIDIA", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" },
-    { name: "Dr. Emily Rodriguez", title: "Research Director, MIT", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" },
+    { name: "Dr. Sarah Chen", title: "VP of Engineering, Google", image: "/images/profiles/sarah-chen.jpg" },
+    { name: "Michael Zhang", title: "Principal Engineer, NVIDIA", image: "/images/profiles/michael-zhang.jpg" },
+    { name: "Dr. Emily Rodriguez", title: "Research Director, MIT", image: "/images/profiles/emily-rodriguez.jpg" },
   ];
 
   const mentors = [
-    { name: "Alex Kim", title: "Senior Hardware Engineer", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" },
-    { name: "Jordan Lee", title: "AI Research Scientist", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80" },
-    { name: "Taylor Park", title: "Robotics Engineer", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80" },
-    { name: "Casey Wong", title: "Embedded Systems Expert", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&q=80" },
+    { name: "Alex Kim", title: "Senior Hardware Engineer", image: "/images/profiles/alex-kim.jpg" },
+    { name: "Jordan Lee", title: "AI Research Scientist", image: "/images/profiles/jordan-lee.jpg" },
+    { name: "Taylor Park", title: "Robotics Engineer", image: "/images/profiles/taylor-park.jpg" },
+    { name: "Casey Wong", title: "Embedded Systems Expert", image: "/images/profiles/casey-wong.jpg" },
   ];
 
   return (

@@ -279,7 +279,7 @@ export default function TermsOfService() {
               <p className="mb-2 text-slate-900"><strong>Next Hardware</strong></p>
               <p className="mb-2 text-slate-600"><strong>Email:</strong> legal@nexthardware.io</p>
               <p className="mb-2 text-slate-600"><strong>Website:</strong> nexthardware.io</p>
-              <p className="mb-2 text-slate-600"><strong>Address:</strong> [Your California Business Address]</p>
+              <p className="mb-2 text-slate-600"><strong>Address:</strong> Palo Alto, California, United States</p>
             </div>
           </section>
 

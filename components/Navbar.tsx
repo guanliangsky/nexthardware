@@ -37,6 +37,15 @@ export default function Navbar() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
+            <a href="/about" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              About
+            </a>
+            <a href="/blog" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              Blog
+            </a>
+            <a href="/resources" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              Resources
+            </a>
             <a href="#events" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
               Events
             </a>
@@ -83,6 +92,27 @@ export default function Navbar() {
           >
             <div className="container mx-auto px-4 py-4">
               <nav className="flex flex-col gap-4">
+                <a
+                  href="/about"
+                  onClick={handleLinkClick}
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                >
+                  About
+                </a>
+                <a
+                  href="/blog"
+                  onClick={handleLinkClick}
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                >
+                  Blog
+                </a>
+                <a
+                  href="/resources"
+                  onClick={handleLinkClick}
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors py-2"
+                >
+                  Resources
+                </a>
                 <a
                   href="#events"
                   onClick={handleLinkClick}

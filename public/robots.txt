@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://nexthardware.io/sitemap.xml
+
+# Disallow admin pages
+Disallow: /admin/
+
+# Disallow API routes (except public ones)
+Disallow: /api/
+

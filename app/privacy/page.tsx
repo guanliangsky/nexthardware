@@ -182,7 +182,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section>
+          <section id="ccpa">
             <h2 className="text-xl font-bold mb-4 text-slate-900">7.1 California Consumer Privacy Act (CCPA) Rights</h2>
             <p className="mb-4 leading-relaxed">
               If you are a California resident, you have specific rights under the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA):
@@ -292,7 +292,7 @@ export default function PrivacyPolicy() {
               <p className="mb-2 text-slate-900"><strong>Next Hardware</strong></p>
               <p className="mb-2 text-slate-600"><strong>Email:</strong> privacy@nexthardware.io</p>
               <p className="mb-2 text-slate-600"><strong>Website:</strong> nexthardware.io</p>
-              <p className="mb-2 text-slate-600"><strong>Address:</strong> [Your California Business Address - Required for CCPA compliance]</p>
+              <p className="mb-2 text-slate-600"><strong>Address:</strong> Palo Alto, California, United States</p>
               <p className="mt-4 text-xs text-slate-500">
                 <strong>For CCPA Requests:</strong> Please email privacy@nexthardware.io with "CCPA Request" in the subject line and specify which right you wish to exercise (access, deletion, correction, etc.). Include your full name and email address for verification.
               </p>

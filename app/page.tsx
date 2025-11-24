@@ -5,6 +5,12 @@ import CommunityHighlights from "@/components/CommunityHighlights";
 import ThreePillars from "@/components/ThreePillars";
 import Events from "@/components/Events";
 import CommunityShowcase from "@/components/CommunityShowcase";
+import Testimonials from "@/components/Testimonials";
+import Timeline from "@/components/Timeline";
+import PressMentions from "@/components/PressMentions";
+import MemberSpotlights from "@/components/MemberSpotlights";
+import CompanyLogos from "@/components/CompanyLogos";
+import FeaturedProjects from "@/components/FeaturedProjects";
 import Newsletter from "@/components/Newsletter";
 import Join from "@/components/Join";
 import Contact from "@/components/Contact";
@@ -16,10 +22,16 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Stats />
+      <CompanyLogos />
       <CommunityHighlights />
       <ThreePillars />
       <Events />
       <CommunityShowcase />
+      <FeaturedProjects />
+      <Testimonials />
+      <Timeline />
+      <PressMentions />
+      <MemberSpotlights />
       <Newsletter />
       <Join />
       <Contact />

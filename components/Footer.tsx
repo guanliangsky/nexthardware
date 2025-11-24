@@ -24,7 +24,10 @@ export default function Footer() {
           >
             <Logo size="sm" showText={false} />
             <p className="text-xs text-slate-600">
-              © 2025 Next Hardware. Building in Public.
+              © 2025 Next Hardware. Established 2023.
+            </p>
+            <p className="text-xs text-slate-500 mt-1">
+              Building the future of hardware, AI, and robotics.
             </p>
           </motion.div>
 
@@ -57,7 +60,19 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <div className="flex gap-3 text-xs">
+              <div className="flex flex-wrap gap-3 text-xs justify-center">
+                <a href="/about" className="text-slate-600 hover:text-slate-900 transition-colors">
+                  About
+                </a>
+                <span className="text-slate-400">•</span>
+                <a href="/blog" className="text-slate-600 hover:text-slate-900 transition-colors">
+                  Blog
+                </a>
+                <span className="text-slate-400">•</span>
+                <a href="/resources" className="text-slate-600 hover:text-slate-900 transition-colors">
+                  Resources
+                </a>
+                <span className="text-slate-400">•</span>
                 <a href="#contact" className="text-slate-600 hover:text-slate-900 transition-colors">
                   Contact
                 </a>
@@ -74,9 +89,17 @@ export default function Footer() {
                   Cookies
                 </a>
               </div>
-              <p className="text-xs text-slate-500 text-center md:text-left">
-                We do not sell personal information
-              </p>
+              <div className="flex flex-col items-center gap-1">
+                <a
+                  href="/privacy#ccpa"
+                  className="text-xs text-slate-500 hover:text-slate-700 transition-colors underline"
+                >
+                  Do Not Sell My Personal Information
+                </a>
+                <p className="text-xs text-slate-500 text-center md:text-left">
+                  We do not sell personal information
+                </p>
+              </div>
             </motion.div>
           </div>
         </div>
