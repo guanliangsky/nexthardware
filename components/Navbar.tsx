@@ -3,8 +3,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Logo from "./Logo";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/useTranslations";
 
 export default function Navbar() {
+  const { locale } = useLanguage();
+  const t = useTranslations(locale);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,28 +41,29 @@ export default function Navbar() {
           <Logo size="lg" showText={false} />
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             <a href="/about" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
-              About
+              {t.nav.about}
             </a>
             <a href="/blog" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
-              Blog
+              {t.nav.blog}
             </a>
             <a href="/resources" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
-              Resources
+              {t.nav.resources}
             </a>
             <a href="#events" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
-              Events
+              {t.nav.events}
             </a>
             <a href="#showcase" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
-              Community
+              {t.nav.community}
             </a>
             <a href="#contact" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
-              Contact
+              {t.nav.contact}
             </a>
             <a href="#join" className="px-4 py-1.5 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors text-sm font-medium">
-              Join
+              {t.nav.join}
             </a>
+            <LanguageSwitcher />
           </div>
 
             {/* Mobile Menu Button */}

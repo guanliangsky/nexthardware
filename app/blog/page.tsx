@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Blog | Next Hardware",
   description: "News, updates, and insights from the Next Hardware community. Event recaps, technical articles, and member spotlights.",

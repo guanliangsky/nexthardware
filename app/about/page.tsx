@@ -1,5 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from "next";
 import { motion } from "framer-motion";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About | Next Hardware",
