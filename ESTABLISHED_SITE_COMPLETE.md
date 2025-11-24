@@ -182,3 +182,5 @@ Your website now looks like:
 
 **Need help generating images?** Just ask and I can guide you through the process!
 
+
+

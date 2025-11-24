@@ -84,3 +84,5 @@ console.log("   • Optimize images before uploading (compress, WebP)");
 console.log("   • Place in public/images/ directory");
 console.log("\n🚀 Ready to generate!");
 
+
+

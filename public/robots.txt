@@ -10,3 +10,5 @@ Disallow: /admin/
 # Disallow API routes (except public ones)
 Disallow: /api/
 
+
+

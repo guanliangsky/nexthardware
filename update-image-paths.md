@@ -84,3 +84,5 @@ Once you have images, I can update all paths automatically! Just let me know whe
 
 **Ready to update?** Just place images in `public/images/` and let me know!
 
+
+
