@@ -200,7 +200,7 @@ export default function CookiePolicy() {
               <p className="mb-2 text-slate-900"><strong>Next Hardware</strong></p>
               <p className="mb-2 text-slate-600"><strong>Email:</strong> privacy@nexthardware.io</p>
               <p className="mb-2 text-slate-600"><strong>Website:</strong> nexthardware.io</p>
-              <p className="mb-2 text-slate-600"><strong>Address:</strong> Palo Alto, California, United States</p>
+              <p className="mb-2 text-slate-600"><strong>Address:</strong> Palo Alto, CA</p>
             </div>
           </section>
 

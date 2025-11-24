@@ -47,7 +47,7 @@ export default function Contact() {
               <div>
                 <h4 className="text-sm font-semibold text-slate-700 mb-2">Location</h4>
                 <p className="text-slate-600">
-                  Palo Alto, California
+                  Palo Alto, CA
                 </p>
               </div>
 
