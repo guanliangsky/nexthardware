@@ -7,13 +7,13 @@
 https://snpmvpsoxeieguojlwzv.supabase.co/auth/v1/callback
 ```
 
-**Google OAuth:**
-- Client ID: `139200018654-schou2gof9cgh6m0merqcslba84terps.apps.googleusercontent.com`
-- Client Secret: `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`
+**Google OAuth (从环境变量获取，不要把真实值写在仓库里):**
+- Client ID: `YOUR_GOOGLE_CLIENT_ID`
+- Client Secret: `YOUR_GOOGLE_CLIENT_SECRET`
 
-**GitHub OAuth:**
-- Client ID: `Ov23liNjItQx0wsxePKh`
-- Client Secret: `eadf4130aa951421a5c4d7ed9e62c248871e8f1c`
+**GitHub OAuth (同样从环境变量读取):**
+- Client ID: `YOUR_GITHUB_CLIENT_ID`
+- Client Secret: `YOUR_GITHUB_CLIENT_SECRET`
 
 ---
 
@@ -54,5 +54,4 @@ https://snpmvpsoxeieguojlwzv.supabase.co/auth/v1/callback
 ---
 
 详细步骤请查看：`SUPABASE_OAUTH_CONFIGURATION_GUIDE.md`
-
 
