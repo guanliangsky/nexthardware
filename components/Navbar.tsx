@@ -5,9 +5,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ThemeToggle from "./ThemeToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslations } from "@/lib/useTranslations";
 import { supabase } from "@/lib/supabaseClient";
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 export default function Navbar() {
   const { locale } = useLanguage();
@@ -58,7 +60,7 @@ export default function Navbar() {
     checkAuth();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       if (session) {
         setIsLoggedIn(true);
         checkAuth();
@@ -89,7 +91,7 @@ export default function Navbar() {
     <>
       <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        scrolled ? "bg-white/95 backdrop-blur-sm border-b border-slate-200" : "bg-transparent"
+        scrolled ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700" : "bg-transparent"
       }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -97,20 +99,20 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20 md:h-24">
-          <Logo size="lg" showText={false} />
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#events" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+            <Logo size="lg" showText={false} variant={scrolled ? "default" : "inverted"} />
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-6">
+            <a href="#events" className={`text-sm ${scrolled ? "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white" : "text-white hover:text-white"} transition-colors`}>
               {t.nav.events}
             </a>
-            <a href="#showcase" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+            <a href="#showcase" className={`text-sm ${scrolled ? "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white" : "text-white hover:text-white"} transition-colors`}>
               {t.nav.community}
             </a>
-            <a href="/sponsors" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+            <a href="/sponsors" className={`text-sm ${scrolled ? "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white" : "text-white hover:text-white"} transition-colors`}>
               {t.nav.sponsors}
             </a>
-            <a href="#contact" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+            <a href="#contact" className={`text-sm ${scrolled ? "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white" : "text-white hover:text-white"} transition-colors`}>
               {t.nav.contact}
             </a>
             
@@ -119,13 +121,13 @@ export default function Navbar() {
               <div className="flex items-center gap-3">
                 <a
                   href="/membership"
-                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
+                  className={`text-sm ${scrolled ? "text-slate-600 hover:text-slate-900" : "text-white hover:text-white"} transition-colors`}
                 >
                   {userName || t.nav.account}
                 </a>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors"
+                  className={`px-4 py-1.5 text-sm ${scrolled ? "text-slate-600 hover:text-slate-900" : "text-white hover:text-white"} transition-colors`}
                 >
                   {t.auth.logout}
                 </button>
@@ -133,12 +135,13 @@ export default function Navbar() {
             ) : (
               <a
                 href="/auth"
-                className="px-4 py-1.5 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors text-sm font-medium"
+                className={`px-4 py-1.5 ${scrolled ? "bg-slate-900 text-white hover:bg-slate-800" : "bg-white/20 text-white hover:bg-white/30"} rounded-md transition-colors text-sm font-medium`}
               >
                 {t.nav.joinLogin}
               </a>
             )}
             
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
 
@@ -233,7 +236,8 @@ export default function Navbar() {
                   </a>
                 )}
                 
-                <div className="pt-2 border-t border-slate-200">
+                <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
+                  <ThemeToggle />
                   <LanguageSwitcher />
                 </div>
               </nav>
@@ -244,4 +248,3 @@ export default function Navbar() {
     </>
   );
 }
-

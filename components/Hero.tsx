@@ -10,12 +10,10 @@ import ParticleBackground from "./ParticleBackground";
 export default function Hero() {
   const { locale } = useLanguage();
   const t = useTranslations(locale);
-  // const backgroundVideo = "/videos/hero-background.mp4"; // Add your video here when ready
+  const backgroundVideo = "/api/hero-video";
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
-      {/* Optional: Video Background (uncomment when you have a video) */}
-      {/* 
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-slate-950">
       <div className="absolute inset-0 z-0">
         <video
           autoPlay
@@ -26,9 +24,8 @@ export default function Hero() {
         >
           <source src={backgroundVideo} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/30" />
       </div>
-      */}
 
       {/* Optional: Video Background (uncomment to use instead of image) */}
       {/* 
@@ -46,19 +43,18 @@ export default function Hero() {
       </div>
       */}
 
-      {/* Particle Background - optional, can be removed if too busy */}
-      <ParticleBackground />
+      
       
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20">
         {/* Centered Text Content */}
         <motion.div
-          className="text-center max-w-4xl mx-auto"
+          className="text-center max-w-4xl mx-auto bg-black/30 backdrop-blur-sm rounded-xl ring-1 ring-white/10 px-6 py-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           <motion.h1
-            className="text-5xl sm:text-6xl lg:text-7xl font-semibold mb-6 text-slate-900 tracking-tight leading-tight"
+            className="text-5xl sm:text-6xl lg:text-7xl font-semibold mb-6 text-white tracking-tight leading-tight"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -67,7 +63,7 @@ export default function Hero() {
           </motion.h1>
           
           <motion.p
-            className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed font-normal"
+            className="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed font-normal"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -96,13 +92,13 @@ export default function Hero() {
                   });
                 }
               }}
-              className="px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm"
+              className="px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors text-sm shadow-lg"
             >
               {t.hero.cta1}
             </a>
             <a
               href="#events"
-              className="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-medium rounded-md hover:border-slate-400 hover:text-slate-900 transition-colors text-sm"
+              className="px-6 py-3 bg-white border border-white/20 text-slate-900 font-medium rounded-md hover:border-white/30 transition-colors text-sm"
             >
               {t.hero.cta2}
             </a>
@@ -115,7 +111,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <p className="text-xs text-slate-500 mb-6 uppercase tracking-wider text-center font-medium">
+            <p className="text-xs text-white/70 mb-6 uppercase tracking-wider text-center font-medium">
               {t.hero.socialProof}
             </p>
             <CompanyLogos />
@@ -137,7 +133,7 @@ function CompanyLogos() {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4">
+    <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 bg-black/10 rounded-md px-4 py-3 ring-1 ring-white/5">
       {companies.map((company) => (
         <CompanyLogo key={company} name={company} />
       ))}
@@ -153,24 +149,26 @@ function CompanyLogo({ name }: { name: string }) {
   
   // Map company names to Simple Icons slug names and Clearbit domains
   const companyMap: Record<string, { simpleIcon?: string; clearbitDomain: string }> = {
-    "Google": { simpleIcon: "google", clearbitDomain: "google.com" },
-    "NVIDIA": { simpleIcon: "nvidia", clearbitDomain: "nvidia.com" },
-    "Apple": { simpleIcon: "apple", clearbitDomain: "apple.com" },
-    "Meta": { simpleIcon: "meta", clearbitDomain: "meta.com" },
-    "Microsoft": { clearbitDomain: "microsoft.com" },
-    "Amazon": { clearbitDomain: "amazon.com" },
-    "Tesla": { simpleIcon: "tesla", clearbitDomain: "tesla.com" },
+    // Prefer Clearbit wordmarks for major brands for accuracy
+    "Google": { clearbitDomain: "google.com" },
+    "NVIDIA": { clearbitDomain: "nvidia.com" },
+    "Apple": { clearbitDomain: "apple.com" },
+    "Meta": { clearbitDomain: "meta.com" },
+    "Tesla": { clearbitDomain: "tesla.com" },
+    "Qualcomm": { clearbitDomain: "qualcomm.com" },
+    "Intel": { clearbitDomain: "intel.com" },
+    "AMD": { clearbitDomain: "amd.com" },
+    "Samsung": { clearbitDomain: "samsung.com" },
+    "Sony": { clearbitDomain: "sony.com" },
+    "Anthropic": { clearbitDomain: "anthropic.com" },
+    // Others
+    "Microsoft": { simpleIcon: "microsoft", clearbitDomain: "microsoft.com" },
+    "Amazon": { simpleIcon: "amazon", clearbitDomain: "amazon.com" },
     "Rokid": { clearbitDomain: "rokid.com" },
-    "Qualcomm": { simpleIcon: "qualcomm", clearbitDomain: "qualcomm.com" },
-    "Intel": { simpleIcon: "intel", clearbitDomain: "intel.com" },
-    "AMD": { simpleIcon: "amd", clearbitDomain: "amd.com" },
-    "Samsung": { simpleIcon: "samsung", clearbitDomain: "samsung.com" },
-    "Sony": { simpleIcon: "sony", clearbitDomain: "sony.com" },
     "Stanford": { clearbitDomain: "stanford.edu" },
     "MIT": { clearbitDomain: "mit.edu" },
     "Berkeley": { clearbitDomain: "berkeley.edu" },
     "OpenAI": { simpleIcon: "openai", clearbitDomain: "openai.com" },
-    "Anthropic": { simpleIcon: "anthropic", clearbitDomain: "anthropic.com" },
     "Boston Dynamics": { clearbitDomain: "bostondynamics.com" },
     "Waymo": { clearbitDomain: "waymo.com" },
   };
@@ -185,22 +183,13 @@ function CompanyLogo({ name }: { name: string }) {
     }
 
     if (company.simpleIcon) {
-      // Default dark version
-      const simpleIconUrl = `https://cdn.simpleicons.org/${company.simpleIcon}/1e293b`;
-      // Colorful version for hover (no color parameter = original colors)
-      const colorfulUrl = `https://cdn.simpleicons.org/${company.simpleIcon}`;
-      
+      const iconUrl = `https://cdn.simpleicons.org/${company.simpleIcon}`;
       const img = new window.Image();
       img.onload = () => {
-        setCurrentSrc(simpleIconUrl);
-        // Preload colorful version
-        const colorfulImg = new window.Image();
-        colorfulImg.onload = () => setHoveredSrc(colorfulUrl);
-        colorfulImg.onerror = () => setHoveredSrc(simpleIconUrl); // Fallback to dark if colorful fails
-        colorfulImg.src = colorfulUrl;
+        setCurrentSrc(iconUrl);
+        setHoveredSrc(iconUrl);
       };
       img.onerror = () => {
-        // Fallback to Clearbit
         const clearbitUrl = `https://logo.clearbit.com/${company.clearbitDomain}`;
         const img2 = new window.Image();
         img2.onload = () => {
@@ -210,9 +199,8 @@ function CompanyLogo({ name }: { name: string }) {
         img2.onerror = () => setImageError(true);
         img2.src = clearbitUrl;
       };
-      img.src = simpleIconUrl;
+      img.src = iconUrl;
     } else {
-      // Use Clearbit directly
       const clearbitUrl = `https://logo.clearbit.com/${company.clearbitDomain}`;
       const img = new window.Image();
       img.onload = () => {
@@ -237,9 +225,10 @@ function CompanyLogo({ name }: { name: string }) {
           alt={name}
           width={120}
           height={32}
-          className="h-8 w-auto object-contain group-hover:drop-shadow-md transition-all duration-300"
+          className="h-8 w-auto object-contain transition-all duration-300 opacity-100 brightness-110 contrast-115 saturate-125"
           onError={() => setImageError(true)}
-          unoptimized
+          priority={false}
+          loading="lazy"
         />
       </div>
     );
@@ -247,9 +236,8 @@ function CompanyLogo({ name }: { name: string }) {
 
   // Fallback to text
   return (
-    <span className="text-sm font-semibold text-slate-700 hover:text-slate-900 hover:scale-110 hover:brightness-110 transition-all duration-300 cursor-pointer inline-block">
+    <span className="text-sm font-semibold text-white/80 hover:text-white hover:scale-110 hover:brightness-110 transition-all duration-300 cursor-pointer inline-block">
       {name}
     </span>
   );
 }
-

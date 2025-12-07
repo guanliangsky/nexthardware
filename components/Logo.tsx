@@ -7,9 +7,10 @@ interface LogoProps {
   className?: string;
   showText?: boolean;
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
+  variant?: "default" | "inverted";
 }
 
-export default function Logo({ className = "", showText = true, size = "md" }: LogoProps) {
+export default function Logo({ className = "", showText = true, size = "md", variant = "default" }: LogoProps) {
   const sizeClasses = {
     sm: "h-6",
     md: "h-8",
@@ -40,7 +41,7 @@ export default function Logo({ className = "", showText = true, size = "md" }: L
           alt="Next Hardware Logo"
           width={imageSize.width}
           height={imageSize.height}
-          className="object-contain w-auto h-full"
+          className={`object-contain w-auto h-full ${variant === "inverted" ? "invert" : ""}`}
           priority
           unoptimized
         />
@@ -56,4 +57,3 @@ export default function Logo({ className = "", showText = true, size = "md" }: L
     </Link>
   );
 }
-

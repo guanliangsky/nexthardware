@@ -4,6 +4,7 @@ import "./globals.css";
 import Analytics from "@/components/Analytics";
 import CookieConsent from "@/components/CookieConsent";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,18 +40,19 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
-        <LanguageProvider>
-          <Analytics />
-          {children}
-          <CookieConsent />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `document.body.classList.add('js-loaded');`,
-            }}
-          />
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <Analytics />
+            {children}
+            <CookieConsent />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `document.body.classList.add('js-loaded');`,
+              }}
+            />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
-

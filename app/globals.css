@@ -7,6 +7,11 @@
   --foreground: #000000;
 }
 
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -17,8 +22,9 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: #ffffff;
-  color: #1a1a1a;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -47,6 +53,56 @@ body {
       linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
     background-size: 20px 20px;
   }
+
+  .dark .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+  }
+  
+  .dark .grid-pattern-dense {
+    background-image: 
+      linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 212, 255, 0.5);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+  }
+
+  /* Glassmorphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .glass {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* Fallback: Ensure content is visible if JavaScript fails to load */
@@ -65,4 +121,3 @@ body {
 body.js-loaded [style*="opacity: 0"] {
   animation: none;
 }
-

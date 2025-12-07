@@ -108,7 +108,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950">
       <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <motion.div
@@ -118,10 +118,10 @@ export default function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-4xl sm:text-5xl font-semibold mb-4 text-slate-900">
+          <h2 className="text-4xl sm:text-5xl font-semibold mb-4 text-slate-900 dark:text-white">
             {t.contact.title}
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
             {t.contact.description}
           </p>
         </motion.div>
@@ -304,4 +304,3 @@ export default function Contact() {
     </section>
   );
 }
-
